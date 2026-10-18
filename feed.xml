@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:googleplay="http://www.google.com/schemas/play-podcasts/1.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Old Paths</title>
+    <link>https://allumstrat.github.io/old-paths-podcast/</link>
+    <atom:link href="https://allumstrat.github.io/old-paths-podcast/feed.xml" rel="self" type="application/rss+xml"/>
+    <description>A private daily podcast walking through the Navigators Bible Reading Plan with historical background, close reading of the text, and the voices of the church fathers, Reformers, Puritans, and faithful modern pastors and theologians.</description>
+    <language>en-us</language>
+    <itunes:subtitle>A daily companion to the Navigators Bible Reading Plan</itunes:subtitle>
+    <itunes:author>Old Paths</itunes:author>
+    
+    <itunes:image href="https://allumstrat.github.io/old-paths-podcast/cover.png"/>
+    <itunes:category text="Religion &amp; Spirituality"><itunes:category text="Christianity"/></itunes:category>
+    <itunes:explicit>false</itunes:explicit>
+    <itunes:type>episodic</itunes:type>
+    <itunes:block>Yes</itunes:block>
+    <googleplay:block>yes</googleplay:block>
+    <lastBuildDate>Sun, 18 Oct 2026 13:42:06 -0700</lastBuildDate>
+    <item>
+      <title>Kept: Jeremiah 33-35, Ecclesiastes 10, John 4, 1 Peter 1</title>
+      <description><![CDATA[Jeremiah 33-35, Ecclesiastes 10, John 4:27-34, 1 Peter 1:1-9
+
+Pilot episode. Shorter and more devotional than the regular format.]]></description>
+      <itunes:summary><![CDATA[Jeremiah 33-35, Ecclesiastes 10, John 4:27-34, 1 Peter 1:1-9
+
+Pilot episode. Shorter and more devotional than the regular format.]]></itunes:summary>
+      <enclosure url="https://github.com/AllumStrat/old-paths-podcast/releases/download/ep-2026-10-17/episode-000.mp3" length="3818366" type="audio/mpeg"/>
+      <guid isPermaLink="false">49ca6ec4-51f8-59e4-b112-fc146947a87e</guid>
+      <pubDate>Sat, 17 Oct 2026 06:00:00 -0700</pubDate>
+      <itunes:duration>10:35</itunes:duration>
+      <itunes:episode>1</itunes:episode>
+      <itunes:explicit>false</itunes:explicit>
+    </item>
+  </channel>
+</rss>

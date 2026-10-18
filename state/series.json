@@ -1,0 +1,40 @@
+{
+ "created": "2026-10-18T13:42:03.969456-07:00",
+ "next_plan_day": "10-14",
+ "last_jump_applied": null,
+ "episodes": [
+  {
+   "number": 1,
+   "date": "2026-10-17",
+   "published": "Sat, 17 Oct 2026 06:00:00 -0700",
+   "plan_day": "10-13",
+   "readings": [
+    "Jeremiah 33-35",
+    "Ecclesiastes 10",
+    "John 4:27-34",
+    "1 Peter 1:1-9"
+   ],
+   "title": "Kept: Jeremiah 33-35, Ecclesiastes 10, John 4, 1 Peter 1",
+   "summary": "Pilot episode, about ten minutes, built around the word 'kept.' Jeremiah 33: God's call to prayer from prison, the righteous Branch and the name 'The Lord is our righteousness,' and the covenant with David and Levi tied to day and night. Jeremiah 34: Zedekiah warned; the slave-release covenant broken once the siege lifted, the calf cut in two, contrasted with Genesis 15. Jeremiah 35: the Rechabites' obedience to Jonadab versus Judah's disobedience, and the promise that Jonadab will never lack a man to stand before God (not a teetotal mandate; Christian liberty). Ecclesiastes 10: dead flies, sharpening the dull iron (v. 10), the sagging roof, the bird that carries your words. John 4: the woman leaves her jar; shame turned to testimony; 'my food is to do the will of him who sent me.' 1 Peter 1:1-9: elect exiles, living hope, an inheritance kept and believers guarded, faith tested like gold.",
+   "threads": [
+    "Jeremiah 35 was covered only briefly; the next Jeremiah episode can deepen it and then move into Jeremiah 36-38 (the scroll burned, Jeremiah in the cistern).",
+    "The 'never lack a man' promises link Jeremiah 33:17-18 and 35:19.",
+    "Ecclesiastes is heading toward its close in chapters 11-12.",
+    "1 Peter's theme of exile and the scattered people of God echoes Jeremiah's exile setting.",
+    "The pilot leaned on New Testament fulfillment in every section; the listener asked for future episodes to stay in each passage and its commentary, using the New Testament only where the text warrants."
+   ],
+   "authors": [],
+   "description": "Jeremiah 33-35, Ecclesiastes 10, John 4:27-34, 1 Peter 1:1-9\n\nPilot episode. Shorter and more devotional than the regular format.",
+   "tag": "ep-2026-10-17",
+   "release_id": 416701308,
+   "mp3_url": "https://github.com/AllumStrat/old-paths-podcast/releases/download/ep-2026-10-17/episode-000.mp3",
+   "bytes": 3818366,
+   "duration": 635,
+   "transcript_path": "transcripts/ep-2026-10-17.txt",
+   "notes_path": "notes/ep-2026-10-17.md",
+   "guid": "49ca6ec4-51f8-59e4-b112-fc146947a87e",
+   "audio_deleted": false,
+   "seed": true
+  }
+ ]
+}
