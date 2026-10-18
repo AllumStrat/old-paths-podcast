@@ -1,0 +1,14 @@
+{
+  "show_title": "Old Paths",
+  "show_subtitle": "A daily companion to the Navigators Bible Reading Plan",
+  "show_description": "A private daily podcast walking through the Navigators Bible Reading Plan with historical background, close reading of the text, and the voices of the church fathers, Reformers, Puritans, and faithful modern pastors and theologians.",
+  "author": "Old Paths",
+  "owner_email": "",
+  "language": "en-us",
+  "timezone": "America/Phoenix",
+  "voice": "en-US-AndrewMultilingualNeural",
+  "voice_rate": "+0%",
+  "target_words_min": 4500,
+  "target_words_max": 5200,
+  "retention_days": 60
+}

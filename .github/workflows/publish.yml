@@ -1,0 +1,34 @@
+name: Publish episode
+
+# The daily Claude Code task pushes a finished script to a claude/episode-DATE branch.
+# This workflow turns it into audio, attaches it to a GitHub Release, updates the feed
+# on gh-pages, deletes audio older than 60 days, and removes the staging branch.
+
+on:
+  push:
+    branches: ["claude/episode-*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: publish-episode
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - run: python scripts/podcast.py publish-incoming
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          SOURCE_BRANCH: ${{ github.ref_name }}
