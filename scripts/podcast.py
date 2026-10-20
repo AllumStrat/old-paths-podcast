@@ -653,7 +653,6 @@ def build_feed(state):
     <itunes:category text="Religion &amp; Spirituality"><itunes:category text="Christianity"/></itunes:category>
     <itunes:explicit>false</itunes:explicit>
     <itunes:type>episodic</itunes:type>
-    <itunes:block>Yes</itunes:block>
     <googleplay:block>yes</googleplay:block>
     <lastBuildDate>{email.utils.format_datetime(now())}</lastBuildDate>
 {chr(10).join(items)}
