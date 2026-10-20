@@ -1,6 +1,6 @@
 {
  "created": "2026-10-18T13:42:03.969456-07:00",
- "next_plan_day": "10-15",
+ "next_plan_day": "10-16",
  "last_jump_applied": null,
  "episodes": [
   {
@@ -82,6 +82,57 @@
    "transcript_path": "transcripts/ep-2026-10-19.txt",
    "notes_path": "notes/ep-2026-10-19.md",
    "guid": "d0a7f136-c08b-5ddc-9521-c7cc1cd77320",
+   "audio_deleted": false
+  },
+  {
+   "number": 3,
+   "date": "2026-10-19",
+   "published": "Mon, 19 Oct 2026 19:35:59 -0700",
+   "plan_day": "10-15",
+   "readings": [
+    "John 5:1-15",
+    "1 Peter 1:17-25",
+    "Ecclesiastes 12",
+    "Jeremiah 39-43"
+   ],
+   "title": "Packed for Egypt: Jeremiah 39-43, Ecclesiastes 12, John 5, 1 Peter 1",
+   "summary": "Jeremiah 39-43 carried the shama (hear/obey) thread to its end. Chapter 39 was taught as the book's hinge: the siege dated January 588 to July 586 B.C., Lachish Letter 4 (cannot see Azekah), the Nebo-Sarsekim tablet confirming 39:3, the Babylonian officers sitting in the gate as Jeremiah 1:15 foretold, and Zedekiah caught at Jericho and blinded at Riblah, which reconciles Jeremiah 34:3 with Ezekiel 12:13 (Henry: darkness for the man who shut his eyes to the word). Ebed-melech's promise (39:15-18) was explained through batach, trust, contrasted with Judah's false trust in Jeremiah 7 and 17 (Spurgeon's Faith's Checkbook; MacLaren: the object of faith is a Person; Calvin: unbelief is always timid). Nebuzaradan preaching 'you did not obey his voice' (Poole; Calvin) and Gedaliah of the family of Shaphan at Mizpah were covered, with the Lachish Gedaliah bulla, the summer-fruit harvest, Gedaliah's refusal to believe Johanan (Henry: the dove without the serpent; Calvin's middle path between gullibility and cruelty), his murder at table in the seventh month (Gill on the Fast of Gedaliah, Zechariah 7:5), the 80 pilgrims thrown into Asa's cistern, and the flight toward Egypt. The hard question of chapter 42 was the remnant's sincerity: their oath 'whether good or bad, we will obey' (Calvin: hearing and obeying the voice amount to the same), the ten days' wait (Henry, Calvin), the 'build and plant' offer echoing Jeremiah 1:10, 42:20 'gone astray against your souls', and Calvin's paragraph on asking counsel after the decision is made; 43 covered 'you are telling a lie' (Poole: deny it is God's will rather than defy God), the double 'did not obey the voice', Tahpanhes and Petrie's pavement, Nebuchadnezzar 'my servant' and the 568 B.C. campaign, and the stoning tradition (Tertullian, Jerome). Application: before asking God for guidance, ask whether you are willing for either answer. Ecclesiastes 12 covered the plural 'Creator' (Henry, Gill), the three 'befores', the aging house poem read loosely, the almond (Gill, linked to Jeremiah 1:11-12 shaqed/shoqed), 12:7 reversing Genesis 2, Henry's 'cream and flower' line, goads and nails, and 12:13 'the whole of man' with Augustine's City of God 20.3. John 5:1-15 covered the unnamed feast, the excavated five porticoes against skeptics and Augustine's five-books allegory, the missing verse 4 (Piper), Spurgeon's 1870 sermon on the paralyzed will ('breakfast with the devil, and sup with Christ'), Chrysostom on 38 years versus ten days of prayer, Calvin's citation of Jeremiah 17:21 for the Sabbath burden, 'sin no more' (Piper: holiness, not health), and the ambiguous 5:15. 1 Peter 1:17-25 covered paroikia exile set against the remnant's refusal to live under Babylon, God judging the heart (Calvin), lutroo and mataios, Calvin's 'ruinous labyrinth of wanderings', Gregory Nazianzen on to whom the ransom was paid, Polycarp's echo of 1:13 and 1:21, unhypocritical love, Isaiah 40, and Piper on imperishability and the infinite value of Christ's blood.",
+   "threads": [
+    "Jeremiah 44-46 is next: Jeremiah's last sermon to the Judeans in Egypt and the queen of heaven (44), the word to Baruch (45), and the start of the oracles against the nations with Egypt and Carchemish (46). The 568 B.C. invasion of Egypt mentioned today bears on 44:30 and 46.",
+    "The shama (hear/obey) thread climaxed in 42:6 versus 43:4 and 43:7; chapter 44 continues it with the people's open refusal ('we will not listen to you'). Close the thread there.",
+    "The stoning tradition for Jeremiah in Egypt (Tertullian, Scorpiace 8; Jerome, Against Jovinianus 2.37) was mentioned; the Lives of the Prophets places it at Tahpanhes, not yet verified.",
+    "The Baruch accusation in 43:3 sets up chapter 45.",
+    "The almond/watching wordplay (Jeremiah 1:11-12) was introduced; can be recalled when the book closes.",
+    "Ecclesiastes is finished; Song of Songs begins tomorrow and needs a book introduction (authorship, the allegorical and literal readings, Bernard of Clairvaux and the Puritans; Calvin wrote no commentary on it).",
+    "John 5:16-30 is next: Jesus's defense, 'My Father is working until now, and I am working', equality with the Father, and the two resurrections of 5:24-29 (already pointed to from 5:14 today). Calvin on 5:17 on the Sabbath and God's continuing providence is in the research file.",
+    "1 Peter 2:1-8 is next: long for the pure spiritual milk, the living stone, the spiritual house; 'therefore' ties back to the new birth through the word in 1:23-25.",
+    "Voices used this episode: Henry (2), Calvin (2 quoted, several paraphrased), Poole (2), Spurgeon (2), MacLaren, Jerome, Augustine, Chrysostom, Polycarp, Piper. Sproul did not have accessible material on these passages. Next time consider Sproul, Ryle, Boice, Owen, Bernard of Clairvaux (Song of Songs), Leighton on 1 Peter, Gill."
+   ],
+   "authors": [
+    "Alexander MacLaren",
+    "Augustine",
+    "C. H. Spurgeon",
+    "Gregory of Nazianzus",
+    "Jerome",
+    "John Calvin",
+    "John Chrysostom",
+    "John Gill",
+    "John Piper",
+    "Ligonier Ministries",
+    "Matthew Henry",
+    "Matthew Poole",
+    "Polycarp",
+    "Tertullian"
+   ],
+   "description": "John 5:1-15, 1 Peter 1:17-25, Ecclesiastes 12, Jeremiah 39-43\n\nJerusalem falls, Zedekiah is blinded, and an Ethiopian who trusted God walks out alive. Then the survivors swear to obey whatever God says, wait ten days for the answer, and go to Egypt anyway. Also: the end of Ecclesiastes, the man at the pool of Bethesda, and the imperishable word in 1 Peter.\nSources quoted:\n - Matthew Henry, Commentary on the Whole Bible, Jeremiah 39 (https://biblehub.com/commentaries/mhcw/jeremiah/39.htm)\n - C. H. Spurgeon, Faith's Checkbook, July 13 (Jeremiah 39:18) (https://ccel.org/ccel/s/spurgeon/checkbook/cache/checkbook.txt)\n - Alexander MacLaren, Expositions of Holy Scripture, Ebedmelech the Ethiopian (https://www.blueletterbible.org/comm/maclaren_alexander/expositions-of-holy-scripture/jeremiah/ebedmelech-the-ethiopian.cfm)\n - Matthew Poole, Commentary on Jeremiah 40 (https://biblehub.com/commentaries/poole/jeremiah/40.htm)\n - John Calvin, Commentary on Jeremiah, Lectures 152-160 (chapters 39-43) (https://ccel.org/ccel/c/calvin/calcom20/cache/calcom20.txt)\n - Matthew Poole, Commentary on Jeremiah 43 (https://biblehub.com/commentaries/poole/jeremiah/43.htm)\n - Jerome, Against Jovinianus, Book 2 (https://www.newadvent.org/fathers/30092.htm)\n - Tertullian, Scorpiace, chapter 8 (paraphrased) (https://www.newadvent.org/fathers/0318.htm)\n - John Gill, Exposition of the Bible, Jeremiah 41 (paraphrased) (https://biblehub.com/commentaries/gill/jeremiah/41.htm)\n - Ligonier Ministries, The Warning to Those Left Behind (paraphrased) (https://learn.ligonier.org/devotionals/warning-those-left-behind)\n - Matthew Henry, Commentary on the Whole Bible, Ecclesiastes 12 (https://biblehub.com/commentaries/mhcw/ecclesiastes/12.htm)\n - Augustine, City of God, Book 20, chapter 3 (https://www.newadvent.org/fathers/120120.htm)\n - John Gill, Exposition of the Bible, Ecclesiastes 12 (paraphrased) (https://biblehub.com/commentaries/gill/ecclesiastes/12.htm)\n - C. H. Spurgeon, A Singular but Needful Question, 1870 (https://www.spurgeon.org/sermons/a-singular-but-needful-question)\n - John Chrysostom, Homilies on the Gospel of John, Homily 36 (https://www.newadvent.org/fathers/240136.htm)\n - Augustine, Tractates on the Gospel of John, Tractate 17 (paraphrased) (https://www.newadvent.org/fathers/1701017.htm)\n - John Calvin, Commentary on John, 5:1-15 (paraphrased) (https://ccel.org/ccel/c/calvin/calcom34/cache/calcom34.txt)\n - John Piper, Healed for the Sake of Holiness (paraphrased) (https://en.gospeltranslations.org/wiki/Healed_for_the_Sake_of_Holiness)\n - John Calvin, Commentary on 1 Peter, 1:17-25 (https://ccel.org/ccel/c/calvin/calcom45/cache/calcom45.txt)\n - Gregory of Nazianzus, Oration 45, Second Oration on Easter (paraphrased) (https://www.newadvent.org/fathers/310245.htm)\n - Polycarp, Epistle to the Philippians, chapter 2 (https://www.newadvent.org/fathers/0136.htm)\n - John Piper, Born Again Through the Living and Abiding Word (https://en.gospeltranslations.org/wiki/Born_Again_Through_the_Living_and_Abiding_Word)",
+   "tag": "ep-2026-10-19-10-15",
+   "release_id": 417943342,
+   "mp3_url": "https://github.com/AllumStrat/old-paths-podcast/releases/download/ep-2026-10-19-10-15/old-paths-2026-10-19.mp3",
+   "bytes": 9664992,
+   "duration": 1610,
+   "transcript_path": "transcripts/ep-2026-10-19-10-15.txt",
+   "notes_path": "notes/ep-2026-10-19-10-15.md",
+   "guid": "5f088c92-412d-5291-8076-8323f38a1d2f",
    "audio_deleted": false
   }
  ]
