@@ -8,13 +8,57 @@
     <language>en-us</language>
     <itunes:subtitle>A daily companion to the Navigators Bible Reading Plan</itunes:subtitle>
     <itunes:author>Old Paths</itunes:author>
-    <itunes:owner><itunes:name>Old Paths</itunes:name><itunes:email>jacob@allumstrategies.com</itunes:email></itunes:owner>
+    
     <itunes:image href="https://allumstrat.github.io/old-paths-podcast/cover.png"/>
     <itunes:category text="Religion &amp; Spirituality"><itunes:category text="Christianity"/></itunes:category>
     <itunes:explicit>false</itunes:explicit>
     <itunes:type>episodic</itunes:type>
+    <itunes:block>Yes</itunes:block>
     <googleplay:block>yes</googleplay:block>
-    <lastBuildDate>Mon, 19 Oct 2026 22:05:51 -0700</lastBuildDate>
+    <lastBuildDate>Mon, 19 Oct 2026 22:39:37 -0700</lastBuildDate>
+    <item>
+      <title>Settled on His Dregs: Jeremiah 47-48, Song of Songs 2, John 5, 1 Peter 2</title>
+      <description><![CDATA[John 5:31-47, 1 Peter 2:9-17, Song of Songs 2, Jeremiah 47-48
+
+Jeremiah turns to Philistia and Moab: the sword of the Lord that cannot be quiet, Moab settled on its dregs and never poured from vessel to vessel, and a surprising promise at the end. Plus the little foxes of Song of Songs 2, the witnesses of John 5, and Peter's sojourners and exiles.
+Sources quoted:
+ - John Calvin, Commentary on Jeremiah, on 47:6-7 (https://www.ccel.org/ccel/calvin/calcom20.xix.vi.html)
+ - John Calvin, Commentary on Jeremiah, on 48:10 (https://www.ccel.org/ccel/calvin/calcom21.ii.i.ix.html)
+ - Matthew Poole, Annotations on Jeremiah 47 (https://biblehub.com/commentaries/poole/jeremiah/47.htm)
+ - John Trapp, Commentary on Jeremiah 48 (https://archive.org/details/JohnTrappsBibleCommentaries)
+ - C. H. Spurgeon, Sermon 761, The Shrill Trumpet of Admonition (Jeremiah 48:11-12), 1867 (https://answersingenesis.org/education/spurgeon-sermons/761-the-shrill-trumpet-of-admonition/)
+ - Keil and Delitzsch (quoting Rashi), Commentary on Jeremiah 48:31 (https://biblehub.com/commentaries/jeremiah/48-31.htm)
+ - James Durham, Clavis Cantici, on Song of Songs 2:16 (https://archive.org/download/claviscant00durh/claviscant00durh_djvu.txt)
+ - Bernard of Clairvaux, Sermons on the Song of Songs, Sermon 69 (Eales translation) (https://archive.org/download/LifeWorksOfSBernardClairvauxV4/LifeWorksOfSBernardClairvauxV4_djvu.txt)
+ - Cyril of Alexandria, Commentary on John, Book 3, on 5:39 (https://tertullian.org/fathers/cyril_on_john_03_book3.htm)
+ - J. C. Ryle, Expository Thoughts on John, vol. 1, on 5:44 (https://archive.org/stream/expositorythough05ryle/expositorythough05ryle_djvu.txt)
+ - Letter to Diognetus, Chapter 5 (https://www.newadvent.org/fathers/0101.htm)
+ - Sinclair B. Ferguson, Sojourners and Exiles, Tabletalk, March 2026 (https://tabletalkmagazine.com/article/2026/03/sojourners-and-exiles/)
+ - John Calvin, Commentary on 1 Peter, on 2:16 (https://www.ccel.org/ccel/calvin/calcom45.iv.iii.v.html)]]></description>
+      <itunes:summary><![CDATA[John 5:31-47, 1 Peter 2:9-17, Song of Songs 2, Jeremiah 47-48
+
+Jeremiah turns to Philistia and Moab: the sword of the Lord that cannot be quiet, Moab settled on its dregs and never poured from vessel to vessel, and a surprising promise at the end. Plus the little foxes of Song of Songs 2, the witnesses of John 5, and Peter's sojourners and exiles.
+Sources quoted:
+ - John Calvin, Commentary on Jeremiah, on 47:6-7 (https://www.ccel.org/ccel/calvin/calcom20.xix.vi.html)
+ - John Calvin, Commentary on Jeremiah, on 48:10 (https://www.ccel.org/ccel/calvin/calcom21.ii.i.ix.html)
+ - Matthew Poole, Annotations on Jeremiah 47 (https://biblehub.com/commentaries/poole/jeremiah/47.htm)
+ - John Trapp, Commentary on Jeremiah 48 (https://archive.org/details/JohnTrappsBibleCommentaries)
+ - C. H. Spurgeon, Sermon 761, The Shrill Trumpet of Admonition (Jeremiah 48:11-12), 1867 (https://answersingenesis.org/education/spurgeon-sermons/761-the-shrill-trumpet-of-admonition/)
+ - Keil and Delitzsch (quoting Rashi), Commentary on Jeremiah 48:31 (https://biblehub.com/commentaries/jeremiah/48-31.htm)
+ - James Durham, Clavis Cantici, on Song of Songs 2:16 (https://archive.org/download/claviscant00durh/claviscant00durh_djvu.txt)
+ - Bernard of Clairvaux, Sermons on the Song of Songs, Sermon 69 (Eales translation) (https://archive.org/download/LifeWorksOfSBernardClairvauxV4/LifeWorksOfSBernardClairvauxV4_djvu.txt)
+ - Cyril of Alexandria, Commentary on John, Book 3, on 5:39 (https://tertullian.org/fathers/cyril_on_john_03_book3.htm)
+ - J. C. Ryle, Expository Thoughts on John, vol. 1, on 5:44 (https://archive.org/stream/expositorythough05ryle/expositorythough05ryle_djvu.txt)
+ - Letter to Diognetus, Chapter 5 (https://www.newadvent.org/fathers/0101.htm)
+ - Sinclair B. Ferguson, Sojourners and Exiles, Tabletalk, March 2026 (https://tabletalkmagazine.com/article/2026/03/sojourners-and-exiles/)
+ - John Calvin, Commentary on 1 Peter, on 2:16 (https://www.ccel.org/ccel/calvin/calcom45.iv.iii.v.html)]]></itunes:summary>
+      <enclosure url="https://github.com/AllumStrat/old-paths-podcast/releases/download/ep-2026-10-14/old-paths-2026-10-14.mp3" length="14885037" type="audio/mpeg"/>
+      <guid isPermaLink="false">efdecb33-5192-539b-9484-bfa8a482746b</guid>
+      <pubDate>Mon, 19 Oct 2026 22:39:37 -0700</pubDate>
+      <itunes:duration>31:00</itunes:duration>
+      <itunes:episode>5</itunes:episode>
+      <itunes:explicit>false</itunes:explicit>
+    </item>
     <item>
       <title>Whose Word Will Stand: Jeremiah 44-46, Song of Songs 1, John 5, 1 Peter 2</title>
       <description><![CDATA[John 5:16-30, 1 Peter 2:1-8, Song of Songs 1, Jeremiah 44-46
