@@ -353,7 +353,10 @@ async def _synthesize(text, out_path):
 
 def synthesize(text, out_path):
     if CONFIG.get("tts", "edge") == "kokoro":
-        return synthesize_kokoro(text, out_path)
+        try:
+            return synthesize_kokoro(text, out_path)
+        except Exception as e:  # keep publishing on schedule; the Edge voice is the fallback
+            print(f"Kokoro failed ({e!r}); falling back to Edge TTS", file=sys.stderr)
     patch_edge_tts_ssl()
     last = None
     for attempt in range(1, 4):
@@ -410,7 +413,7 @@ def synthesize_kokoro(text, out_path):
                 parts.append(np.asarray(audio, dtype=np.float32))
         parts.append(pause)
     if not parts:
-        raise SystemExit("Text-to-speech produced no audio")
+        raise RuntimeError("Kokoro produced no audio")
 
     wav = Path(out_path).with_suffix(".wav")
     sf.write(str(wav), np.concatenate(parts), 24000)
