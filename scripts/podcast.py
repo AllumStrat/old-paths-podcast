@@ -141,6 +141,9 @@ class GitHub:
                              headers={"Content-Type": "audio/mpeg"}).json()
         return rel["id"], asset["browser_download_url"]
 
+    def release_exists(self, tag):
+        return self.req("GET", f"/releases/tags/{tag}", ok=(200, 404)).status_code == 200
+
     def delete_episode(self, release_id, tag):
         self.req("DELETE", f"/releases/{release_id}", ok=(204, 404))
         self.req("DELETE", f"/git/refs/tags/{tag}", ok=(204, 404, 422))
@@ -450,6 +453,8 @@ def publish_episode(c, *, date, raw, meta, research="", plan_day_id=None, jump_a
         state["last_jump_applied"] = jump_applied
     day_id = plan_day_id or state["next_plan_day"]
     tag = f"ep-{date}" + ("" if not force else "-" + now().strftime("%H%M%S"))
+    if c.release_exists(tag):
+        tag = f"ep-{date}-{day_id}"  # an earlier episode was re-dated and still holds this tag
 
     WORK.mkdir(exist_ok=True)
     mp3 = WORK / f"old-paths-{date}.mp3"
