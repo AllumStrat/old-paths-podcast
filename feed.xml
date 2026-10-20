@@ -8,14 +8,56 @@
     <language>en-us</language>
     <itunes:subtitle>A daily companion to the Navigators Bible Reading Plan</itunes:subtitle>
     <itunes:author>Old Paths</itunes:author>
-    
+    <itunes:owner><itunes:name>Old Paths</itunes:name><itunes:email>jacob@allumstrategies.com</itunes:email></itunes:owner>
     <itunes:image href="https://allumstrat.github.io/old-paths-podcast/cover.png"/>
     <itunes:category text="Religion &amp; Spirituality"><itunes:category text="Christianity"/></itunes:category>
     <itunes:explicit>false</itunes:explicit>
     <itunes:type>episodic</itunes:type>
-    <itunes:block>Yes</itunes:block>
     <googleplay:block>yes</googleplay:block>
-    <lastBuildDate>Mon, 19 Oct 2026 22:39:37 -0700</lastBuildDate>
+    <lastBuildDate>Tue, 20 Oct 2026 04:42:55 -0700</lastBuildDate>
+    <item>
+      <title>Let Your Widows Trust in Me: Jeremiah 49, Song of Songs 3, John 6, 1 Peter 2</title>
+      <description><![CDATA[John 6:1-15, 1 Peter 2:18-25, Song of Songs 3, Jeremiah 49
+
+Jeremiah's oracles against Ammon, Edom, Damascus, Kedar, and Elam, and the puzzling promise to Edom's widows: 'let your widows trust in me.' Also the bride's night search and Solomon's wedding procession in Song of Songs 3, the feeding of the five thousand and the crown Jesus refused in John 6, and the copybook of Christ's suffering in 1 Peter 2.
+Sources quoted:
+ - Keil and Delitzsch, Commentary on the Old Testament, Jeremiah 49:11 (https://biblehub.com/commentaries/jeremiah/49-11.htm)
+ - John Trapp, Commentary on Jeremiah 49 (https://archive.org/download/JohnTrappsBibleCommentaries/JTrapp%2024%20Jeremiah%20-%20John%20Trapp.epub)
+ - John Calvin, Commentaries on the Book of the Prophet Jeremiah, Lectures on chapter 49 (https://ccel.org/ccel/c/calvin/calcom21/cache/calcom21.txt)
+ - Max Rogland, 3 Things You Should Know About Obadiah (Ligonier) (https://learn.ligonier.org/articles/3-things-obadiah)
+ - C. H. Spurgeon, Morning and Evening, Evening, September 7 (Jeremiah 49:23) (https://ccel.org/ccel/spurgeon/morneve.d0907pm.html)
+ - C. H. Spurgeon, Love's Vigilance Rewarded, Sermon 2485 (Song of Songs 3:4) (https://www.spurgeon.org/sermons/loves-vigilance-rewarded)
+ - Matthew Poole, Annotations, Song of Songs 3:4 (https://biblehub.com/commentaries/songs/3-4.htm)
+ - Cyril of Alexandria, Commentary on John, Book 3 (https://www.tertullian.org/fathers/cyril_on_john_03_book3.htm)
+ - R. C. Sproul, Feeding the Five Thousand (sermon on John 6:1-15) (https://www.ligonier.org/learn/sermons/feeding)
+ - John Piper, The All-Providing King Who Would Not Be King (John 6:1-15) (https://en.gospeltranslations.org/wiki/The_All-Providing_King_Who_Would_Not_Be_King)
+ - Robert Leighton, A Practical Commentary upon the First Epistle of Peter, on 2:21 (https://archive.org/download/practicalcomment02leig/practicalcomment02leig_djvu.txt)
+ - Alexander MacLaren, Expositions of Holy Scripture, 'Christ the Exemplar' (1 Peter 2:21) (https://biblehub.com/commentaries/1_peter/2-21.htm)
+ - Polycarp, Epistle to the Philippians, chapter 8 (https://www.newadvent.org/fathers/0136.htm)]]></description>
+      <itunes:summary><![CDATA[John 6:1-15, 1 Peter 2:18-25, Song of Songs 3, Jeremiah 49
+
+Jeremiah's oracles against Ammon, Edom, Damascus, Kedar, and Elam, and the puzzling promise to Edom's widows: 'let your widows trust in me.' Also the bride's night search and Solomon's wedding procession in Song of Songs 3, the feeding of the five thousand and the crown Jesus refused in John 6, and the copybook of Christ's suffering in 1 Peter 2.
+Sources quoted:
+ - Keil and Delitzsch, Commentary on the Old Testament, Jeremiah 49:11 (https://biblehub.com/commentaries/jeremiah/49-11.htm)
+ - John Trapp, Commentary on Jeremiah 49 (https://archive.org/download/JohnTrappsBibleCommentaries/JTrapp%2024%20Jeremiah%20-%20John%20Trapp.epub)
+ - John Calvin, Commentaries on the Book of the Prophet Jeremiah, Lectures on chapter 49 (https://ccel.org/ccel/c/calvin/calcom21/cache/calcom21.txt)
+ - Max Rogland, 3 Things You Should Know About Obadiah (Ligonier) (https://learn.ligonier.org/articles/3-things-obadiah)
+ - C. H. Spurgeon, Morning and Evening, Evening, September 7 (Jeremiah 49:23) (https://ccel.org/ccel/spurgeon/morneve.d0907pm.html)
+ - C. H. Spurgeon, Love's Vigilance Rewarded, Sermon 2485 (Song of Songs 3:4) (https://www.spurgeon.org/sermons/loves-vigilance-rewarded)
+ - Matthew Poole, Annotations, Song of Songs 3:4 (https://biblehub.com/commentaries/songs/3-4.htm)
+ - Cyril of Alexandria, Commentary on John, Book 3 (https://www.tertullian.org/fathers/cyril_on_john_03_book3.htm)
+ - R. C. Sproul, Feeding the Five Thousand (sermon on John 6:1-15) (https://www.ligonier.org/learn/sermons/feeding)
+ - John Piper, The All-Providing King Who Would Not Be King (John 6:1-15) (https://en.gospeltranslations.org/wiki/The_All-Providing_King_Who_Would_Not_Be_King)
+ - Robert Leighton, A Practical Commentary upon the First Epistle of Peter, on 2:21 (https://archive.org/download/practicalcomment02leig/practicalcomment02leig_djvu.txt)
+ - Alexander MacLaren, Expositions of Holy Scripture, 'Christ the Exemplar' (1 Peter 2:21) (https://biblehub.com/commentaries/1_peter/2-21.htm)
+ - Polycarp, Epistle to the Philippians, chapter 8 (https://www.newadvent.org/fathers/0136.htm)]]></itunes:summary>
+      <enclosure url="https://github.com/AllumStrat/old-paths-podcast/releases/download/ep-2026-10-20/old-paths-2026-10-20.mp3" length="15289773" type="audio/mpeg"/>
+      <guid isPermaLink="false">2451fc36-4eb0-5492-8633-f4d264f141f7</guid>
+      <pubDate>Tue, 20 Oct 2026 04:42:55 -0700</pubDate>
+      <itunes:duration>31:51</itunes:duration>
+      <itunes:episode>6</itunes:episode>
+      <itunes:explicit>false</itunes:explicit>
+    </item>
     <item>
       <title>Settled on His Dregs: Jeremiah 47-48, Song of Songs 2, John 5, 1 Peter 2</title>
       <description><![CDATA[John 5:31-47, 1 Peter 2:9-17, Song of Songs 2, Jeremiah 47-48
