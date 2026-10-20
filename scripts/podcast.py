@@ -348,10 +348,12 @@ def patch_edge_tts_ssl():
 async def _synthesize(text, out_path):
     import edge_tts
 
-    await edge_tts.Communicate(text, CONFIG["voice"], rate=CONFIG["voice_rate"]).save(str(out_path))
+    await edge_tts.Communicate(text, CONFIG["edge_voice"], rate=CONFIG["edge_rate"]).save(str(out_path))
 
 
 def synthesize(text, out_path):
+    if CONFIG.get("tts", "edge") == "kokoro":
+        return synthesize_kokoro(text, out_path)
     patch_edge_tts_ssl()
     last = None
     for attempt in range(1, 4):
@@ -364,6 +366,57 @@ def synthesize(text, out_path):
             last = e
         print(f"TTS attempt {attempt} failed: {last}", file=sys.stderr)
     raise SystemExit(f"Text-to-speech failed after 3 attempts: {last}")
+
+
+ESPEAK_LIBS = ["/opt/homebrew/lib/libespeak-ng.dylib", "/usr/local/lib/libespeak-ng.dylib"]
+ESPEAK_DATA_DIRS = ["/usr/lib/x86_64-linux-gnu/espeak-ng-data", "/usr/lib/aarch64-linux-gnu/espeak-ng-data",
+                    "/usr/share/espeak-ng-data", "/opt/homebrew/share/espeak-ng-data", "/usr/local/share/espeak-ng-data"]
+
+
+def use_system_espeak():
+    """misaki points phonemizer at espeakng-loader's bundled espeak-ng, whose baked-in data path
+    is broken in some wheels. Prefer a system espeak-ng (apt or Homebrew) when one is installed."""
+    import ctypes.util
+
+    import misaki.espeak  # noqa: F401  (sets the bundled paths on import; overridden below)
+    from phonemizer.backend.espeak.wrapper import EspeakWrapper
+
+    lib = ctypes.util.find_library("espeak-ng") or next((l for l in ESPEAK_LIBS if os.path.exists(l)), None)
+    data = next((d for d in ESPEAK_DATA_DIRS if os.path.exists(os.path.join(d, "phontab"))), None)
+    if lib and data:
+        EspeakWrapper.set_library(lib)
+        EspeakWrapper.set_data_path(data)
+
+
+def synthesize_kokoro(text, out_path):
+    """Render with the Kokoro-82M open model on the CPU, paragraph by paragraph, then encode to MP3."""
+    import subprocess
+
+    import numpy as np
+    import soundfile as sf
+
+    use_system_espeak()
+    from kokoro import KPipeline
+
+    voice = CONFIG["voice"]
+    pipe = KPipeline(lang_code=voice[0], repo_id="hexgrad/Kokoro-82M", device="cpu")
+    pause = np.zeros(int(24000 * 0.45), dtype=np.float32)
+    parts = []
+    for para in (p.strip() for p in re.split(r"\n\s*\n", text)):
+        if not para:
+            continue
+        for _, _, audio in pipe(para, voice=voice, speed=float(CONFIG.get("voice_speed", 1.0))):
+            if audio is not None:
+                parts.append(np.asarray(audio, dtype=np.float32))
+        parts.append(pause)
+    if not parts:
+        raise SystemExit("Text-to-speech produced no audio")
+
+    wav = Path(out_path).with_suffix(".wav")
+    sf.write(str(wav), np.concatenate(parts), 24000)
+    subprocess.run(["ffmpeg", "-loglevel", "error", "-y", "-i", str(wav), "-ac", "1", "-b:a", "64k", str(out_path)],
+                   check=True)
+    wav.unlink()
 
 
 def mp3_duration(path):

@@ -28,7 +28,7 @@ Hand `KICKOFF.md` to Claude Code on your computer. It creates the repo, bootstra
 ## Costs
 
 - **GitHub:** free. Releases older than 60 days are deleted, so roughly 60 episodes at about 11 MB each are stored at any time. Each publish uses a few minutes of free Actions time.
-- **Text-to-speech:** free. It uses Microsoft Edge's online voices through the `edge-tts` library. That service is unofficial and could change. If it ever stops working, swap `synthesize()` in `scripts/podcast.py` for a paid TTS API.
+- **Text-to-speech:** free. It uses the open Kokoro-82M model (voice `am_michael`), which runs on the GitHub Actions CPU, so no outside service is involved. To go back to Microsoft Edge's online voices, set `"tts": "edge"` in `config.json`.
 - **Claude:** each run counts against your Claude plan's usage.
 
 ## Files
