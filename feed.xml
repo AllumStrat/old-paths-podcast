@@ -8,14 +8,13 @@
     <language>en-us</language>
     <itunes:subtitle>A daily companion to the Navigators Bible Reading Plan</itunes:subtitle>
     <itunes:author>Old Paths</itunes:author>
-    
+    <itunes:owner><itunes:name>Old Paths</itunes:name><itunes:email>jacob@allumstrategies.com</itunes:email></itunes:owner>
     <itunes:image href="https://allumstrat.github.io/old-paths-podcast/cover.png"/>
     <itunes:category text="Religion &amp; Spirituality"><itunes:category text="Christianity"/></itunes:category>
     <itunes:explicit>false</itunes:explicit>
     <itunes:type>episodic</itunes:type>
-    <itunes:block>Yes</itunes:block>
     <googleplay:block>yes</googleplay:block>
-    <lastBuildDate>Mon, 19 Oct 2026 21:24:55 -0700</lastBuildDate>
+    <lastBuildDate>Mon, 19 Oct 2026 22:05:51 -0700</lastBuildDate>
     <item>
       <title>Whose Word Will Stand: Jeremiah 44-46, Song of Songs 1, John 5, 1 Peter 2</title>
       <description><![CDATA[John 5:16-30, 1 Peter 2:1-8, Song of Songs 1, Jeremiah 44-46
