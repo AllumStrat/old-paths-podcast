@@ -1,6 +1,6 @@
 {
  "created": "2026-10-18T13:42:03.969456-07:00",
- "next_plan_day": "10-20",
+ "next_plan_day": "10-21",
  "last_jump_applied": null,
  "episodes": [
   {
@@ -327,6 +327,49 @@
    "transcript_path": "transcripts/ep-2026-10-21.txt",
    "notes_path": "notes/ep-2026-10-21.md",
    "guid": "2824cc02-3e78-5403-982e-edcab21368f4",
+   "audio_deleted": false
+  },
+  {
+   "number": 8,
+   "date": "2026-10-22",
+   "published": "Thu, 22 Oct 2026 04:31:39 -0700",
+   "plan_day": "10-20",
+   "readings": [
+    "John 6:25-40",
+    "1 Peter 3:8-12",
+    "Song of Songs 4:8-16",
+    "Jeremiah 51"
+   ],
+   "title": "The Scroll in the River: Jeremiah 51, Song of Songs 4, John 6, 1 Peter 3",
+   "summary": "Jeremiah 51 was taught as the end of the Babylon oracle, dated by 51:59 to Zedekiah's fourth year (594/593 B.C.), the same year as Jeremiah 27-28, so Hananiah's 'two years' was set against Jeremiah's seventy years and this scroll of Babylon's doom. The episode covered Leb-kamai as a second atbash cipher (Kasdim), 'not widowed' in 51:5 (Calvin on the temporary divorce), the golden cup in the Lord's hand (Calvin paraphrased on God governing unseen), the hymn of 51:15-19 repeated from chapter 10, har hammashchit 'destroying mountain' echoing 2 Kings 23:13 (Ellicott), the empty vessel of 51:34 recalling Moab's lees, Bel disgorging the temple vessels returned in Ezra 1 (Gill's 'vomiting what he had swallowed up'), and the drunken feast of 51:39, 57 with Daniel 5 and Herodotus on the diverted Euphrates. The hard question was the vengeance prayer of 51:35 against 29:7 (seek Babylon's welfare): God answers 'I will plead your cause' (51:36), so complaint goes to God and the sword stays sheathed (Calvin quoted). 51:45-50 'let Jerusalem come into your mind' was taught with Calvin on the small portion who returned, Spurgeon's 1882 sermon 'Sacred Memories', Jerome's Letter 46 applying 51:6 to leaving Rome (judged too literal), Augustine on Psalm 137 ('weep even when it is well with you in Babylon'), and Daniel's windows. Seraiah was identified as Baruch's brother (32:12), with Avigad's unprovenanced seal held loosely; sar menuchah as quartermaster (Keil and Delitzsch, Ellicott, ESV) versus 'quiet prince' (Calvin, Henry quoted, Poole, Gill), closing the rest thread with 51:58 and 51:64 'they shall become exhausted'; Calvin's 'hardly one in a hundred ... when God alone is witness' on the private reading; the drowned scroll set against Jehoiakim's burned scroll (ch 36); application: read God's word when God alone is witness and let Jerusalem come to mind while Babylon is comfortable. Song of Songs 4:8-16 covered the first 'bride' (kallah), the call from Lebanon, libbavtini 'you have taken my heart', 'my sister' in Egyptian love songs, the locked garden as chastity and exclusivity (Proverbs 5), pardes/paradise, Cyprian's Epistle 73 on the enclosed garden as the church (his rebaptism conclusion rejected), the speaker of 4:16 (Sibbes and ESV: he speaks; Spurgeon: she prays) with 'my garden' answered by 'his garden', Sibbes on the nipping and cherishing winds, and Spurgeon's 'blow ... flow'. John 6:25-40 covered motive (Augustine 'scarcely sought after for Jesus' sake'; Calvin paraphrased), works versus the work of believing (Augustine versus Calvin's 'passive work'), the sign request and manna, the first predicated I am, Spurgeon's 'I never reconcile friends' on 6:37 with the double negative, and 6:39 'lose nothing' closing the fragments thread with Westminster Confession 17 and the 1689 Confession. 1 Peter 3:8-12 covered 'finally' closing the submission section from 2:13, the five virtues, blessing instead of reviling with Calvin's 'highest magnanimity' and Gill's 'taking God's prerogative', Psalm 34 (also behind 1 Peter 2:3; David at Gath), Calvin on pursuing peace, Augustine versus Calvin on 'good days', and God's watching eyes. Closing connections: Jeremiah 51:35-36 and 1 Peter 3:9-12 both hand the case to God; Babylon devours and Bel disgorges, while Christ gives himself as bread and loses nothing.",
+   "threads": [
+    "Jeremiah 52 is next: the historical appendix ('Thus far are the words of Jeremiah' was explained as an editorial note, probably Baruch's). It retells 39 and 2 Kings 24-25 (siege, Zedekiah blinded, temple vessels taken, now listed in detail, which links to Bel's swallowing in 51:44 and Ezra 1:7-11), the deportation numbers (52:28-30), and Jehoiachin released by Evil-merodach (52:31-34), with the Babylonian ration tablets naming Jehoiachin as a possible archaeology note. Close the book's arc and recall the almond/watching wordplay of 1:11-12 promised in episode 3.",
+    "The quiet/rest thread is now fully closed (sar menuchah, 51:58 and 51:64 'exhausted'). The vessel thread (48:11-12, 51:34, 51:44, Daniel 5) can return in 52:17-23 with the temple vessels.",
+    "Unused Jeremiah 51 material: Owen's 1690 sermon 'Seasonable Words for English Protestants' on 51:5 (text not found online), Calvin on 51:46 rumors and Matthew 24:6, Calvin on 51:9 physicians, the hammer of 51:20-23 as past Babylon or future Cyrus (Calvin's editor), Ligonier devotionals 'Coming Out of Babylon' and 'The Fall of Babylon', Spurgeon's 'rats behind the wainscot' on church membership (Sermon 2648), Jerome Letter 45 'after Babylon, I may see Jerusalem'.",
+    "Song of Songs 5 is next: 5:1 'I came to my garden' answers 4:16 ('my garden' / 'his garden'), then the night knock, the bride's delay, the search and beating by the watchmen, and her wasf of him (5:10-16). Sibbes's Bowels Opened covers 4:16-6:3 and is fetched (monergism PDF); Spurgeon has sermons on 5:1-16 in the index (sindex_ot.pdf). Spurgeon's 'My Garden, His Garden' (Sermon 2475) and 'A Secret and Yet No Secret' (431) on 4:12 were not used.",
+    "John 6:41-59 is next: the grumbling (echoing Israel over manna), 6:44 'no one can come unless the Father draws him' (Calvin denied 6:29 teaches faith as gift; 6:44 and 6:65 do), 'I will raise him up on the last day' again, and 'eat my flesh and drink my blood' (Lord's Supper question; state the Reformed spiritual-presence view briefly). Augustine Tractates 26-27, Chrysostom Homilies 46-47, Calvin on 6:44 available.",
+    "1 Peter 3:13-22 is next: suffering for righteousness, 'sanctify Christ as Lord' and give a reason for hope (3:15), the spirits in prison, Noah, and 'baptism now saves you' (3:21). Cyprian's Epistle 73 (used today on Song 4:12) ties Song 4:12 to 1 Peter 3:20-21 and the ark. State the Presbyterian view of baptism in a sentence, acknowledge the Baptist view charitably.",
+    "Voices used this episode: Calvin (3 quotes, several paraphrases), Gill (2), Henry, Spurgeon (3 sermons), Jerome, Augustine (2), Cyprian, Sibbes; paraphrased Poole, Keil and Delitzsch, Ellicott, Cambridge Bible. Desiring God still returns 403 (no Piper); no Sproul material found on these passages. Next time consider Owen, Watson, Boice, Ryle, Leighton, Durham, Bernard, Chrysostom, Poole, Trapp."
+   ],
+   "authors": [
+    "Augustine",
+    "C. H. Spurgeon",
+    "Cyprian of Carthage",
+    "Jerome",
+    "John Calvin",
+    "John Gill",
+    "Matthew Henry",
+    "Richard Sibbes"
+   ],
+   "description": "John 6:25-40, 1 Peter 3:8-12, Song of Songs 4:8-16, Jeremiah 51\n\nJeremiah's Babylon oracle ends with Seraiah, Baruch's brother, reading a scroll alone by the Euphrates and sinking it with a stone, and the exiles are told to let Jerusalem come into their minds. Also: the locked garden and the two winds of Song of Songs 4, 'I am the bread of life' in John 6, and Peter's call to bless instead of retaliate, with Calvin, Gill, Henry, Spurgeon, Sibbes, Cyprian, Jerome, and Augustine.\nSources quoted:\n - John Gill, Exposition of the Entire Bible, Jeremiah 51:44 (https://biblehub.com/commentaries/jeremiah/51-44.htm)\n - John Calvin, Commentary on Jeremiah and Lamentations, vol. 5, on Jeremiah 51:35-36 and 51:59-64 (https://ccel.org/ccel/c/calvin/calcom21/cache/calcom21.txt)\n - C. H. Spurgeon, Sacred Memories, Sermon 2648, on Jeremiah 51:50 (https://www.spurgeongems.org/sermon/chs2648.pdf)\n - Jerome, Letter 46, Paula and Eustochium to Marcella (https://www.newadvent.org/fathers/3001046.htm)\n - Augustine, Exposition on Psalm 137 (https://www.newadvent.org/fathers/1801137.htm)\n - Matthew Henry, Commentary on the Whole Bible, Jeremiah 51 (https://www.biblestudytools.com/commentaries/matthew-henry-complete/jeremiah/51.html)\n - Cyprian of Carthage, Epistle 73, to Jubaianus (https://www.newadvent.org/fathers/050673.htm)\n - Richard Sibbes, Bowels Opened, Sermon 1, on Song of Songs 4:16 (https://monergism.com/thethreshold/sdg/sibbes/Bowels Opened - Richard Sibbes.pdf)\n - C. H. Spurgeon, Grace for Communion, Sermon 1941, on Song of Songs 4:16 (https://www.spurgeongems.org/sermon/chs1941.pdf)\n - Augustine, Tractate 25 on the Gospel of John (https://www.newadvent.org/fathers/1701025.htm)\n - C. H. Spurgeon, High Doctrine and Broad Doctrine, Sermon 1762, on John 6:37 (https://www.spurgeongems.org/sermon/chs1762.pdf)\n - John Calvin, Commentaries on the Catholic Epistles, on 1 Peter 3:9 (https://ccel.org/ccel/c/calvin/calcom45/cache/calcom45.txt)\n - John Gill, Exposition of the Entire Bible, 1 Peter 3:9 (https://biblehub.com/commentaries/1_peter/3-9.htm)",
+   "tag": "ep-2026-10-22",
+   "release_id": 420641229,
+   "mp3_url": "https://github.com/AllumStrat/old-paths-podcast/releases/download/ep-2026-10-22/old-paths-2026-10-22.mp3",
+   "bytes": 15047085,
+   "duration": 1880,
+   "transcript_path": "transcripts/ep-2026-10-22.txt",
+   "notes_path": "notes/ep-2026-10-22.md",
+   "guid": "6338554d-0f09-5d78-a500-8bfb39d34408",
    "audio_deleted": false
   }
  ]
