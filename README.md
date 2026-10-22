@@ -25,6 +25,17 @@ Hand `KICKOFF.md` to Claude Code on your computer. It creates the repo, bootstra
 - **Rebuild the feed by hand:** `GH_TOKEN=$(gh auth token) python scripts/podcast.py feed`.
 - **If a morning's episode is missing:** check the repo's Actions tab for a failed "Publish episode" run, and the scheduled task's history at claude.ai/code/scheduled.
 
+## A second show: Morning Mercies
+
+The repo also runs Morning Mercies, Grace's own show on the same reading plan, from `shows/grace/`. Jacob's show is untouched: same files, same feed, same branch names.
+
+- **How it's chosen:** Grace's daily task runs `python3 scripts/podcast.py next --show grace` (its prompt is `shows/grace/ROUTINE_PROMPT.md`). Every later command in that run reads the show from `work/today.json`.
+- **Where it lands:** staging branches are `claude/episode-grace-DATE`, which the same "Publish episode" workflow picks up. Releases are tagged `ep-grace-DATE`. Her feed, cover, state, transcripts, and notes live under `grace/` on `gh-pages`, so her feed is `https://allumstrat.github.io/old-paths-podcast/grace/feed.xml`. Her feed is marked private (`itunes_block`).
+- **First episode:** a new show sets itself up when its first episode publishes. No bootstrap step.
+- **Her settings:** `shows/grace/config.json` holds the show's fixed details. `shows/grace/settings.json` (voice, speed, length, plan day, focus) and `shows/grace/feedback.jsonl` are written by the settings site in `site/`. `shows/grace/STYLE.md` adjusts `STYLE.md` for her show and says how the writer uses her focus and feedback.
+- **Both shows at once:** the publish workflow runs one episode at a time. GitHub keeps only one waiting run per group, so keep the two daily tasks at least a few minutes apart.
+- **Tests:** `python3 -m unittest discover -s tests` runs both shows through `next`, `stage`, and `publish-incoming` offline.
+
 ## Costs
 
 - **GitHub:** free. Releases older than 60 days are deleted, so roughly 60 episodes at about 11 MB each are stored at any time. Each publish uses a few minutes of free Actions time.

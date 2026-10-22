@@ -10,6 +10,12 @@ Commands
   feed       Rebuild and upload feed.xml from the saved state.
   bootstrap  One-time setup: upload cover art and seed the series state.
 
+Shows
+  The repo can run more than one show. With no show named, everything works exactly as it
+  always has: config.json, plan/jump_to.txt, and feed.xml at the root of gh-pages. A second
+  show lives in shows/NAME/ and is chosen with `next --show NAME` (or SHOW=NAME). Later
+  commands in the same run read the show from work/today.json, so only `next` needs the flag.
+
 Environment variables (only for publish, publish-incoming, feed, bootstrap)
   GH_TOKEN or GITHUB_TOKEN        token with contents and pages write access
   GH_REPO or GITHUB_REPOSITORY    owner/repo, for example jacob/old-paths-podcast
@@ -32,14 +38,64 @@ from zoneinfo import ZoneInfo
 
 ROOT = Path(__file__).resolve().parent.parent
 WORK = ROOT / "work"
-CONFIG = json.loads((ROOT / "config.json").read_text())
+BASE_CONFIG = json.loads((ROOT / "config.json").read_text())
+CONFIG = BASE_CONFIG
 PLAN = json.loads((ROOT / "plan" / "navigators.json").read_text())
 DAYS = PLAN["days"]
 IDS = [d["id"] for d in DAYS]
 TZ = ZoneInfo(CONFIG["timezone"])
 SYSTEM_CA = "/etc/ssl/certs/ca-certificates.crt"
-STATE_KEY = "state/series.json"
 NAMESPACE = uuid.UUID("6f1d3c52-8a4e-4c43-9a3e-01da4ba50000")
+
+# Per-show settings. The defaults are the original show; set_show() switches to shows/NAME/.
+SHOW = ""             # "" is the original show
+PREFIX = ""           # where this show's files live on gh-pages ("" or "NAME/")
+STATE_KEY = "state/series.json"
+JUMP_PATH = ROOT / "plan" / "jump_to.txt"
+SETTINGS = {}         # what the listener saved from the settings site (shows/NAME/settings.json)
+
+# What the settings site may change, and the word ranges behind each length.
+SETTABLE = ("voice", "voice_speed", "length", "jump_to", "focus")
+LENGTHS = {"short": (2200, 2600), "medium": (3300, 3800), "full": (4500, 5200)}
+SHOW_NAME = re.compile(r"^[a-z0-9][a-z0-9-]{0,30}$")
+
+
+def set_show(name):
+    """Point every path, tag, and setting at one show. "" (or None) is the original show."""
+    global SHOW, PREFIX, STATE_KEY, JUMP_PATH, SETTINGS, CONFIG, TZ
+    name = (name or "").strip()
+    if not name:
+        SHOW, PREFIX, STATE_KEY, JUMP_PATH, SETTINGS, CONFIG = (
+            "", "", "state/series.json", ROOT / "plan" / "jump_to.txt", {}, BASE_CONFIG)
+        TZ = ZoneInfo(CONFIG["timezone"])
+        return
+    folder = ROOT / "shows" / name
+    if not SHOW_NAME.match(name) or not (folder / "config.json").exists():
+        sys.exit(f"Unknown show '{name}'. Expected shows/{name}/config.json.")
+    cfg = {**BASE_CONFIG, **json.loads((folder / "config.json").read_text())}
+    settings = {}
+    if (folder / "settings.json").exists():
+        try:
+            raw = json.loads((folder / "settings.json").read_text())
+            settings = {k: raw[k] for k in SETTABLE if k in raw}
+        except ValueError as e:
+            print(f"warning: shows/{name}/settings.json is not valid JSON ({e}); using defaults", file=sys.stderr)
+    if isinstance(settings.get("voice"), str) and re.fullmatch(r"[a-z]{2}_[a-z]+", settings["voice"]):
+        cfg["voice"] = settings["voice"]
+    try:
+        cfg["voice_speed"] = min(1.5, max(0.7, float(settings.get("voice_speed", cfg.get("voice_speed", 1.0)))))
+    except (TypeError, ValueError):
+        pass
+    if settings.get("length") in LENGTHS:
+        cfg["target_words_min"], cfg["target_words_max"] = LENGTHS[settings["length"]]
+    SHOW, PREFIX, SETTINGS, CONFIG = name, f"{name}/", settings, cfg
+    STATE_KEY = PREFIX + "state/series.json"
+    JUMP_PATH = folder / "jump_to.txt"
+    TZ = ZoneInfo(CONFIG["timezone"])
+
+
+def tag_for(date):
+    return f"ep-{SHOW}-{date}" if SHOW else f"ep-{date}"
 
 
 def env(name, *fallbacks):
@@ -240,23 +296,57 @@ def next_id(day_id):
 
 
 def read_jump():
-    path = ROOT / "plan" / "jump_to.txt"
-    if not path.exists():
+    value = None
+    if SETTINGS.get("jump_to"):
+        value = str(SETTINGS["jump_to"]).strip()
+    elif JUMP_PATH.exists():
+        lines = [l.strip() for l in JUMP_PATH.read_text().splitlines() if l.strip() and not l.strip().startswith("#")]
+        value = lines[-1] if lines else None
+    if not value:
         return None
-    lines = [l.strip() for l in path.read_text().splitlines() if l.strip() and not l.strip().startswith("#")]
-    if not lines:
-        return None
-    value = lines[-1]
     if value not in IDS:
-        print(f"warning: plan/jump_to.txt value '{value}' is not a valid plan day; ignoring", file=sys.stderr)
+        print(f"warning: jump value '{value}' is not a valid plan day; ignoring", file=sys.stderr)
         return None
     return value
+
+
+def new_state(start):
+    return {"created": now().isoformat(), "next_plan_day": start, "last_jump_applied": None, "episodes": []}
+
+
+def first_plan_day(today=None):
+    """Where a brand-new show starts: its saved plan day, else its config's start, else today's spot in the plan.
+    The plan gives each month 25 days, so the 26th to the 31st map to the month's last plan day."""
+    for value in (SETTINGS.get("jump_to"), CONFIG.get("start_plan_day")):
+        if value in IDS:
+            return value
+    today = today or now().date()
+    month = [i for i in IDS if i.split("-")[0] == str(today.month)]
+    fit = [i for i in month if int(i.split("-")[1]) <= today.day]
+    return fit[-1] if fit else (month[0] if month else IDS[0])
+
+
+def listener_feedback(limit=15):
+    """The listener's recent notes from the settings site (shows/NAME/feedback.jsonl), newest last."""
+    path = ROOT / "shows" / SHOW / "feedback.jsonl" if SHOW else None
+    if not path or not path.exists():
+        return []
+    rows = []
+    for line in path.read_text().splitlines():
+        try:
+            rows.append(json.loads(line))
+        except ValueError:
+            continue
+    return rows[-limit:]
 
 
 # ---------------------------------------------------------------- next
 
 def cmd_next(args):
     state = load_state_readonly()
+    if state is None and SHOW:
+        state = new_state(first_plan_day(dt.date.fromisoformat(args.date) if args.date else None))
+        print(f"note: no episodes yet for show '{SHOW}'; starting at plan day {state['next_plan_day']}", file=sys.stderr)
     if state is None:
         sys.exit("No series state found. Has bootstrap been run? (see README.md)")
 
@@ -298,6 +388,16 @@ def cmd_next(args):
         "authors_quoted_in_last_12_episodes": dict(sorted(recent_sources.items(), key=lambda kv: -kv[1])),
         "target_words": [CONFIG["target_words_min"], CONFIG["target_words_max"]],
     }
+    if SHOW:
+        context["show"] = SHOW
+        context["show_title"] = CONFIG["show_title"]
+        context["listener"] = {
+            "name": CONFIG.get("listener_name", ""),
+            "style_notes_file": f"shows/{SHOW}/STYLE.md",
+            "focus": str(SETTINGS.get("focus", "")).strip(),
+            "length": SETTINGS.get("length", "full"),
+            "recent_feedback": listener_feedback(),
+        }
     WORK.mkdir(exist_ok=True)
     (WORK / "today.json").write_text(json.dumps(context, indent=1))
     print(json.dumps(context, indent=1))
@@ -467,8 +567,8 @@ def add_episode(state, *, date, day_id, meta, tag, release_id, mp3_url, size, du
         "mp3_url": mp3_url,
         "bytes": size,
         "duration": duration,
-        "transcript_path": f"transcripts/{tag}.txt",
-        "notes_path": f"notes/{tag}.md",
+        "transcript_path": f"{PREFIX}transcripts/{tag}.txt",
+        "notes_path": f"{PREFIX}notes/{tag}.md",
         "guid": episode_guid(tag),
         "audio_deleted": False,
     })
@@ -500,6 +600,11 @@ def validate(raw, meta, allow_short=False):
 
 def publish_episode(c, *, date, raw, meta, research="", plan_day_id=None, jump_applied=None, force=False):
     state = load_state(c)
+    first_files = {}
+    if state is None and SHOW:
+        # A new show sets itself up on its first episode: state, cover art, and feed under PREFIX.
+        state = new_state(plan_day_id or first_plan_day())
+        first_files[PREFIX + "cover.png"] = cover_bytes()
     if state is None:
         sys.exit("No series state found. Run bootstrap first.")
     if any(e["date"] == date for e in real_episodes(state)) and not force:
@@ -508,12 +613,12 @@ def publish_episode(c, *, date, raw, meta, research="", plan_day_id=None, jump_a
     if jump_applied:
         state["last_jump_applied"] = jump_applied
     day_id = plan_day_id or state["next_plan_day"]
-    tag = f"ep-{date}" + ("" if not force else "-" + now().strftime("%H%M%S"))
+    tag = tag_for(date) + ("" if not force else "-" + now().strftime("%H%M%S"))
     if c.release_exists(tag):
-        tag = f"ep-{date}-{day_id}"  # an earlier episode was re-dated and still holds this tag
+        tag = f"{tag_for(date)}-{day_id}"  # an earlier episode was re-dated and still holds this tag
 
     WORK.mkdir(exist_ok=True)
-    mp3 = WORK / f"old-paths-{date}.mp3"
+    mp3 = WORK / f"{SHOW or 'old-paths'}-{date}.mp3"
     synthesize(clean_for_speech(raw), mp3)
     size, duration = mp3.stat().st_size, mp3_duration(mp3)
     print(f"audio: {size/1e6:.1f} MB, {duration//60}:{duration%60:02d}", file=sys.stderr)
@@ -524,15 +629,16 @@ def publish_episode(c, *, date, raw, meta, research="", plan_day_id=None, jump_a
     state["next_plan_day"] = next_id(day_id) if day_id in IDS else state["next_plan_day"]
     removed = prune(c, state)
     c.commit({
+        **first_files,
         ep["transcript_path"]: raw,
         ep["notes_path"]: show_notes_text(meta) + ("\n\n---\nResearch notes\n\n" + research if research else ""),
         STATE_KEY: json.dumps(state, indent=1),
-        "feed.xml": build_feed(state),
-    }, f"Episode {ep['number']}: {meta['title']}")
+        PREFIX + "feed.xml": build_feed(state),
+    }, f"{CONFIG['show_title'] + ' e' if SHOW else 'E'}pisode {ep['number']}: {meta['title']}")
     c.request_pages_build()
-    result = {"status": "published", "episode": ep["number"], "plan_day": day_id,
+    result = {"status": "published", "show": SHOW or "default", "episode": ep["number"], "plan_day": day_id,
               "next_plan_day": state["next_plan_day"], "audio": mp3_url,
-              "feed": pages_url("feed.xml"), "pruned_old_episodes": removed}
+              "feed": pages_url(PREFIX + "feed.xml"), "pruned_old_episodes": removed}
     print(json.dumps(result, indent=1))
     return result
 
@@ -569,8 +675,9 @@ def cmd_stage(args):
     if (WORK / "research.md").exists():
         shutil.copy(WORK / "research.md", folder / "research.md")
     (folder / "plan.json").write_text(json.dumps({"plan_day": today["plan_day"],
-                                                  "jump_applied": today.get("jump_applied")}, indent=1))
-    branch = f"claude/episode-{date}"
+                                                  "jump_applied": today.get("jump_applied"),
+                                                  **({"show": SHOW} if SHOW else {})}, indent=1))
+    branch = f"claude/episode-{SHOW}-{date}" if SHOW else f"claude/episode-{date}"
 
     def git(*a):
         print("+ git " + " ".join(a), file=sys.stderr)
@@ -581,8 +688,8 @@ def cmd_stage(args):
     git("-c", "user.name=Old Paths", "-c", "user.email=old-paths@users.noreply.github.com",
         "commit", "-m", f"Stage episode for {date}: {meta['title']}")
     git("push", "-f", "-u", "origin", branch)
-    print(json.dumps({"status": "staged", "date": date, "branch": branch, "words": words,
-                      "feed": pages_url("feed.xml"),
+    print(json.dumps({"status": "staged", "show": SHOW or "default", "date": date, "branch": branch, "words": words,
+                      "feed": pages_url(PREFIX + "feed.xml"),
                       "note": "The 'Publish episode' GitHub Action now makes the audio and updates the feed (about 5-10 minutes)."},
                      indent=1))
 
@@ -598,6 +705,7 @@ def cmd_publish_incoming(args):
         meta = json.loads((folder / "meta.json").read_text())
         plan = json.loads((folder / "plan.json").read_text()) if (folder / "plan.json").exists() else {}
         research = (folder / "research.md").read_text() if (folder / "research.md").exists() else ""
+        set_show(plan.get("show"))
         validate(raw, meta, allow_short=True)
         publish_episode(c, date=folder.name, raw=raw, meta=meta, research=research,
                         plan_day_id=plan.get("plan_day"), jump_applied=plan.get("jump_applied"))
@@ -642,18 +750,18 @@ def build_feed(state):
 <rss version="2.0" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:googleplay="http://www.google.com/schemas/play-podcasts/1.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>{escape(cfg['show_title'])}</title>
-    <link>{escape(pages_url())}</link>
-    <atom:link href="{escape(pages_url('feed.xml'))}" rel="self" type="application/rss+xml"/>
+    <link>{escape(pages_url(PREFIX))}</link>
+    <atom:link href="{escape(pages_url(PREFIX + 'feed.xml'))}" rel="self" type="application/rss+xml"/>
     <description>{escape(cfg['show_description'])}</description>
     <language>{cfg['language']}</language>
     <itunes:subtitle>{escape(cfg['show_subtitle'])}</itunes:subtitle>
     <itunes:author>{escape(cfg['author'])}</itunes:author>
     {owner}
-    <itunes:image href="{escape(pages_url('cover.png'))}"/>
+    <itunes:image href="{escape(pages_url(PREFIX + 'cover.png'))}"/>
     <itunes:category text="Religion &amp; Spirituality"><itunes:category text="Christianity"/></itunes:category>
     <itunes:explicit>false</itunes:explicit>
     <itunes:type>episodic</itunes:type>
-    <googleplay:block>yes</googleplay:block>
+    <googleplay:block>yes</googleplay:block>{chr(10) + '    <itunes:block>Yes</itunes:block>' if cfg.get('itunes_block') else ''}
     <lastBuildDate>{email.utils.format_datetime(now())}</lastBuildDate>
 {chr(10).join(items)}
   </channel>
@@ -666,11 +774,16 @@ def cmd_feed(args):
     state = load_state(c)
     if state is None:
         sys.exit("No series state found.")
-    c.commit({"feed.xml": build_feed(state)}, "Rebuild feed")
-    print(pages_url("feed.xml"))
+    c.commit({PREFIX + "feed.xml": build_feed(state)}, "Rebuild feed")
+    print(pages_url(PREFIX + "feed.xml"))
 
 
 # ---------------------------------------------------------------- bootstrap
+
+def cover_bytes():
+    own = ROOT / "shows" / SHOW / "cover.png" if SHOW else None
+    return (own if own and own.exists() else ROOT / "seed" / "cover.png").read_bytes()
+
 
 def cmd_bootstrap(args):
     c = client()
@@ -681,12 +794,12 @@ def cmd_bootstrap(args):
         sys.exit(f"--start must be a plan day like 10-14; got {args.start}")
 
     state = {"created": now().isoformat(), "next_plan_day": args.start, "last_jump_applied": read_jump(), "episodes": []}
-    files = {"cover.png": (ROOT / "seed" / "cover.png").read_bytes(), ".nojekyll": ""}
+    files = {PREFIX + "cover.png": cover_bytes(), ".nojekyll": ""}
 
-    if args.seed_mp3 and Path(args.seed_mp3).exists():
+    if args.seed_mp3 and Path(args.seed_mp3).exists() and not SHOW:
         meta = json.loads(Path(args.seed_meta).read_text())
         date = meta.get("date") or now().date().isoformat()
-        tag = f"ep-{date}"
+        tag = tag_for(date)
         mp3 = Path(args.seed_mp3)
         release_id, mp3_url = c.upload_episode(tag, meta["title"], show_notes_text(meta), mp3)
         published = email.utils.format_datetime(dt.datetime.fromisoformat(date + "T06:00:00").replace(tzinfo=TZ))
@@ -699,13 +812,13 @@ def cmd_bootstrap(args):
         files[ep["notes_path"]] = show_notes_text(meta)
 
     files[STATE_KEY] = json.dumps(state, indent=1)
-    files["feed.xml"] = build_feed(state)
+    files[PREFIX + "feed.xml"] = build_feed(state)
     c.commit(files, "Bootstrap Old Paths feed")
     site = c.enable_pages()
     c.request_pages_build()
     print(json.dumps({"status": "bootstrapped", "next_plan_day": state["next_plan_day"],
                       "episodes": len(state["episodes"]), "pages_site": site or pages_url(),
-                      "feed": pages_url("feed.xml"),
+                      "feed": pages_url(PREFIX + "feed.xml"),
                       "note": "GitHub Pages can take a few minutes to go live the first time."}, indent=1))
 
 
@@ -718,6 +831,7 @@ def main():
     n = sub.add_parser("next")
     n.add_argument("--force", action="store_true", help="run even if an episode already exists for today")
     n.add_argument("--date", help="treat this date (YYYY-MM-DD) as today")
+    n.add_argument("--show", help="a show in shows/NAME/ (default: the original show)")
     n.set_defaults(func=cmd_next)
 
     st = sub.add_parser("stage", help="push today's finished episode to a claude/episode-DATE branch")
@@ -754,7 +868,23 @@ def main():
 
     args = p.parse_args()
     os.chdir(ROOT)
+    set_show(resolve_show(args))
     args.func(args)
+
+
+def resolve_show(args):
+    """--show, else SHOW, else the show today's `next` picked (work/today.json), else the original show.
+    publish-incoming ignores all of these and takes the show from each staged folder."""
+    if getattr(args, "show", None) is not None:
+        return args.show
+    if os.environ.get("SHOW", "").strip():
+        return os.environ["SHOW"].strip()
+    if args.cmd in ("stage", "transcript", "publish") and (WORK / "today.json").exists():
+        try:
+            return json.loads((WORK / "today.json").read_text()).get("show", "")
+        except ValueError:
+            pass
+    return ""
 
 
 if __name__ == "__main__":
