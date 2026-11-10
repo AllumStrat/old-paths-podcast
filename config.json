@@ -11,7 +11,7 @@
   "voice_speed": 1.0,
   "edge_voice": "en-US-AndrewMultilingualNeural",
   "edge_rate": "+0%",
-  "target_words_min": 4500,
-  "target_words_max": 5200,
+  "target_words_min": 2300,
+  "target_words_max": 2600,
   "retention_days": 60
 }

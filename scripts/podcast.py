@@ -495,6 +495,8 @@ def validate(raw, meta, allow_short=False):
     lo, hi = CONFIG["target_words_min"], CONFIG["target_words_max"]
     if words < lo * 0.85 and not allow_short:
         sys.exit(f"Script is {words} words; target is {lo}-{hi}. Expand it, or pass --allow-short.")
+    if words > hi * 1.1 and not allow_short:
+        sys.exit(f"Script is {words} words; target is {lo}-{hi}. Cut it down, or pass --allow-short.")
     return words
 
 

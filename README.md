@@ -1,6 +1,6 @@
 # Old Paths
 
-This is a private daily podcast that follows the Navigators Bible Reading Plan. Every morning a Claude Code scheduled task researches that day's four readings, writes a script of about 30 minutes, converts it to audio, and publishes it to a podcast feed your app subscribes to. Everything is hosted on GitHub for free.
+This is a private daily podcast that follows the Navigators Bible Reading Plan. Every morning a Claude Code scheduled task researches that day's four readings, writes a script of about 15 minutes, converts it to audio, and publishes it to a podcast feed your app subscribes to. Everything is hosted on GitHub for free.
 
 ## How it works
 

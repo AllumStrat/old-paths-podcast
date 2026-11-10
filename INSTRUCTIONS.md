@@ -42,18 +42,18 @@ Using the structure and word budget in `STYLE.md`, write a short outline at the 
 
 ## 5. Write the script
 
-Write `work/script.txt` following `STYLE.md` exactly. Plain spoken text only. Target 4,500 to 5,200 words.
+Write `work/script.txt` following `STYLE.md` exactly. Plain spoken text only. Target 2,300 to 2,600 words, about 15 minutes.
 
 ## 6. Review and revise
 
 Check each of these and fix anything that fails:
 
-- [ ] `wc -w work/script.txt` is between 4,500 and 5,200.
+- [ ] `wc -w work/script.txt` is between 2,300 and 2,600.
 - [ ] Every quotation in the script appears word for word in the quote bank with a URL. Remove or paraphrase anything that does not.
 - [ ] No quote is attributed to an author who did not write on that book. For example, Calvin wrote no commentary on Ecclesiastes or Song of Songs.
 - [ ] The Old Testament segment teaches the Old Testament passage in its own setting, with no more than two New Testament moves, each one warranted.
 - [ ] No segment ends with a reflexive "this points us to Jesus" line.
-- [ ] There are 8 to 14 quotations, with at least one father, one Puritan or Reformer, one Baptist, and one Presbyterian across the episode. Sproul, Spurgeon, or Piper appears if they genuinely addressed the passages.
+- [ ] There are 5 to 8 quotations, with at least one father and at least one Puritan, Reformer, Baptist, or Presbyterian, and the four traditions are rotated across the week rather than all forced into one episode. Sproul, Spurgeon, or Piper appears if they genuinely addressed the passages.
 - [ ] The opening picks up a thread from the recent episodes, and the close previews the next plan day.
 - [ ] The script follows the text-to-speech rules: no markdown, lists, parentheses, URLs, em dashes, abbreviations, or "LORD" in capitals, and references are written as speech.
 - [ ] Nothing from yesterday's script is repeated, whether an illustration, quote, or application.
@@ -83,6 +83,7 @@ python3 scripts/podcast.py stage
 This copies your script, metadata, and research into `incoming/DATE/` and pushes them to a `claude/episode-DATE` branch. A GitHub Action on that branch then makes the audio, attaches it to a GitHub Release, updates the feed and series state on `gh-pages`, deletes audio older than 60 days, and removes the branch.
 
 - If it rejects the script as too short, expand the script with more substance from your research, not padding, and run it again.
+- If it rejects the script as too long, cut whole points rather than squeezing sentences, and run it again.
 - If the push fails, run it once more. If it fails again, stop and report the error.
 - Optionally, if you can reach the feed URL printed by `stage`, wait up to 15 minutes and confirm today's title appears in it.
 
