@@ -1,6 +1,6 @@
 {
  "created": "2026-10-18T13:42:03.969456-07:00",
- "next_plan_day": "11-22",
+ "next_plan_day": "11-23",
  "last_jump_applied": null,
  "episodes": [
   {
@@ -1546,6 +1546,47 @@
    "transcript_path": "transcripts/ep-2026-11-21.txt",
    "notes_path": "notes/ep-2026-11-21.md",
    "guid": "3357a71a-a2a9-5193-bac0-342cb9be4493",
+   "audio_deleted": false
+  },
+  {
+   "number": 35,
+   "date": "2026-11-22",
+   "published": "Sun, 22 Nov 2026 04:21:36 -0700",
+   "plan_day": "11-22",
+   "readings": [
+    "John 13:1-11",
+    "3 John 1-14",
+    "Job 20",
+    "Daniel 5-6"
+   ],
+   "title": "Open Windows: Daniel 5-6, Job 20, John 13, 3 John",
+   "summary": "Daniel 5-6 was set in the last years of Babylon: Nabonidus in Tayma while his son Belshazzar ran Babylon (Nabonidus Chronicle), which explains 'third ruler' (5:7, 16, 29); 'father' read as ancestor; the city fell to Cyrus's army without battle in October 539 B.C. (Opis, Sippar; Herodotus's festival paraphrased). The temple vessels closed the 1:2 thread. The hard question for chapter 5, why Belshazzar had no grace period when Nebuchadnezzar had twelve months, was answered from 5:22 'though you knew all this' with Calvin quoted (those who sin knowingly are without excuse); mene, mene, tekel, parsin were taught as weights (mina, mina, shekel, half-minas; Cambridge) read by Daniel as verbs, with Keil's puns on 'light' and Persia. In chapter 6, Darius the Mede was briefly identified (Ligonier: possibly Gubaru), Jerome was quoted on 6:5 (enemies find no fault except in God's law), the 'all are agreed' lie noted, and 6:10 tied to Solomon's prayer in 1 Kings 8. The hard question was whether Daniel's open-window prayer was wise given Matthew 6:6: Jerome cautious (paraphrased), Spurgeon No. 815 (1868) paraphrased (not for publicity, courtyard windows) and quoted ('He did not believe in opposing outward falsehood by an inward truth'), Calvin paraphrased (any change a partial abjuration); the host's answer was 'as he had done previously': no added protest, no subtracted habit. NT moves: Matthew 6:6 as the objection and Hebrews 11:33. Application: courage under pressure is simply the ordinary habit kept. Henry was quoted in the welcome (furnace for not committing a known sin, den for not omitting a known duty). Job 20 was Zophar's last speech in three waves (vanishing, sweet evil turning to cobra venom, God's arsenal); true doctrine misapplied, measured within this short life (Barnes paraphrased) and deaf to 19:25, with Watson's Expositor's Bible quoted (Zophar heard only an avenger) and Gill paraphrased (a sneer at Job's faith). John 13:1-11 opened the upper room: eis telos with Augustine quoted ('whose death could not end'), 13:3 greatness as the reason for the towel, Sproul paraphrased (only a Gentile slave could be made to wash feet), Luke 22:24, Calvin paraphrased on Peter's false humility, louo/nipto with Augustine (baptism and daily sins) and Calvin (renewal), and Judas washed (Calvin: unnamed to leave repentance open). 3 John was taught whole as the mirror of 2 John: v4, the missionaries 'for the sake of the name' and 'fellow workers', Diotrephes (philoproteuon, ambition not doctrine) with MacArthur quoted ('self-love is the mother of all heresies'), v11, and Demetrius. The closing connection was bent knees: Belshazzar unhumbled, Daniel kneeling, Diotrephes first, Jesus kneeling with a towel.",
+   "threads": [
+    "Daniel 7-8 is next and the book turns from court stories to visions: chapter 7 (first year of Belshazzar, so before chapter 5) with the four beasts from the sea, the Ancient of Days, and 'one like a son of man' coming with the clouds (7:13-14; Jesus' self-title, a warranted NT move: Mark 14:62), the saints receiving the kingdom; chapter 8 (third year of Belshazzar, back in Hebrew from 8:1) with the ram and the goat named as Media-Persia and Greece (8:20-21) and the little horn (Antiochus IV). Link chapter 7's four beasts to chapter 2's statue. Hippolytus's scholia on Daniel 7-8 (newadvent 0502, already fetched in src/dan_hippolytus) and Jerome (tertullian.org jerome_daniel_02_text, chapter 7 at line ~1844 of src/dan_jerome.c.txt) cover them; Calvin on Daniel 7 is at biblehub.com/commentaries/calvin/daniel/7.htm.",
+    "Unused Daniel 5-6 material: Henry 'Security and sensuality are sad presages of approaching ruin'; Henry 'If this be the finger of God, what is his arm made bare? And what is he?' (paraphrased only); Henry 'The angel's presence made even the lions' den his strong-hold, his palace, his paradise; he had never had a better night in his life'; Henry on 6:10 'it forbids us to censure those that do, for God owned him in it'; Henry 'that which few approve of is sometimes confidently said to be that which all agree to'; Calvin on the windows as a stimulus ('our sloth in these days has need of more stimulants!'); Spurgeon No. 815 'Caesar always muddles when he meddles with the things of God' and 'open towards Calvary'; Spurgeon 'The Scales of Judgment' (1859) on 5:27 fetched but unused; Jerome 'the conqueror ran to his captive, the master to his servant'; Ligonier 'not instigating confrontation but rather going about his normal routine'; MacArthur 'any compromise at all would have been read as self-serving'; Ferguson via Ligon Duncan on praying toward Jerusalem; 6:24 accusers' families (Ammianus on Persian law, via Barnes) and the sealed stone typology (Pulpit, Henry) were cut.",
+    "Job 21:1-21 is next: Job answers Zophar directly, 'Why do the wicked live, reach old age, and grow mighty in power?' (21:7), their children established, houses safe, 'they spend their days in prosperity' (21:13), and 'How often is it that the lamp of the wicked is put out?' (21:17), answering Bildad's 18:5 and Zophar's 20:5. Gregory Moralia Book 15 covers Job 21 too (src/job20_gregory15). Unused Job 20: Henry 'Never was any doctrine better explained, or worse applied, than this by Zophar' (used only as a host idea, not quoted); Gregory 'What else is the life of the hypocrite but the vision of a phantom'; Calvin's Sermons 73-77 (Golding 1574) on poison seasoned with honey and sugar; Ellicott on 20:19 charges with 'not a vestige of ground' (Job answers in chapter 31); Watson 'We cannot argue from what sometimes is to what must be'; Keil on gelel (dung-cakes) and merorah (gall/venom).",
+    "John 13:12-17 is next: Jesus puts his garments back on (EGT links tithemi in 13:4 to 10:11; the taking up in 13:12 may echo 10:17-18), 'Do you understand what I have done to you?', 'you call me Teacher and Lord', 'you also ought to wash one another's feet', 'I have given you an example', and 'If you know these things, blessed are you if you do them.' Ligonier 'The Example of Jesus' (2018) and Sproul 'The Foot Washing' cover it; Augustine Tractate 58 and Chrysostom Homily 71 should follow. Unused 13:1-11: Augustine 'Why wonder, if He poured water into a basin... who poured His blood upon the earth'; Calvin 'Thus Christ always finds in us something to cleanse' and 'pride will always lurk under the garb of humility'; Chrysostom 'Vehement in deprecation, he becomes yet more vehement in acquiescence; but both from love' and his view that Judas was washed first (Augustine: Peter first); Ryle 'Those whom He receives He always keeps. Those whom He loves at first He loves at last'; Spurgeon 'The Sine Qua Non' 'Here is nought of merit but all of mercy' and his priest-and-laver image; Henry 'it is not humility, but unbelief, to put away the offers of the gospel'; Passover timing (Sproul: a meal before the Passover) skipped.",
+    "Jude 1-7 begins next (new book: give a compact introduction): Jude the brother of James, 'contend for the faith that was once for all delivered to the saints' (v3), ungodly people who 'pervert the grace of our God into sensuality' (v4), and the three examples: Israel saved out of Egypt then destroyed, angels who left their position, Sodom and Gomorrah. Calvin's calcom45 includes Jude (unlike 2-3 John). Clement of Alexandria's Adumbrations (newadvent 0211) cover Jude. Unused 3 John: Spurgeon No. 1148 'No wolf prays for its offspring to become a sheep' and 'That which comes to us by the gate of prayer comes into the house with music and dancing'; Henry 'It is bad not to do good ourselves; but it is worse to hinder those who would do good'; Pulpit linking v8 to 2 John 11; Bengel 'He, who honours such as are described in the following verse, honours God'; Piper's Let the Nations Be Glad on 3 John 7; Didache 11 on travelling apostles; Ligonier on v2 against the prosperity reading.",
+    "Voices quoted this episode: Matthew Henry (Daniel 6), John Calvin (Daniel 5:22), Jerome (Commentary on Daniel 6:5), C. H. Spurgeon (No. 815, 'Daniel's Undaunted Courage', 1868), Robert A. Watson (Expositor's Bible, Job 20), Augustine (Tractate 55 on John), John MacArthur ('The Heresy of Self-Centeredness', 3 John 9). Paraphrased: Henry on 5:5, Cambridge Bible, Keil, Ligonier 'In the Den of Lions', Jerome on 6:11, Spurgeon No. 815, Calvin on 6:10, John 13:8 and 13:11, Barnes and Gill on Job 20, R. C. Sproul 'The Foot Washing', Augustine Tractate 56. Background: Nabonidus Chronicle (livius.org), Herodotus 1.191. Desiring God still returns 403; no Piper today."
+   ],
+   "authors": [
+    "Augustine",
+    "C. H. Spurgeon",
+    "Jerome",
+    "John Calvin",
+    "John MacArthur",
+    "Matthew Henry",
+    "Robert A. Watson"
+   ],
+   "description": "John 13:1-11, 3 John 1-14, Job 20, Daniel 5-6\n\nBelshazzar drinks from the temple vessels and is weighed and found wanting, and Daniel keeps his windows open toward Jerusalem with the lions waiting. Zophar preaches true doctrine at the wrong man, Jesus takes a towel, and John praises Gaius and rebukes Diotrephes, who loved to be first.\nSources quoted:\n - Matthew Henry, Commentary on the Whole Bible, Daniel 6 (https://biblehub.com/commentaries/mhcw/daniel/6.htm)\n - John Calvin, Commentaries on Daniel, Daniel 5:22 (https://biblehub.com/commentaries/calvin/daniel/5.htm)\n - Jerome, Commentary on Daniel, tr. Gleason Archer, Daniel 6:5 (https://tertullian.org/fathers/jerome_daniel_02_text.htm)\n - C. H. Spurgeon, Daniel's Undaunted Courage, No. 815 (1868), Daniel 6:10 (https://www.spurgeon.org/sermons/daniels-undaunted-courage)\n - Robert A. Watson, The Expositor's Bible, The Book of Job, Job 20 (https://biblehub.com/commentaries/expositors/job/20.htm)\n - Augustine, Tractates on the Gospel of John, Tractate 55 (https://www.newadvent.org/fathers/1701055.htm)\n - John MacArthur, The Heresy of Self-Centeredness (Ligonier), 3 John 9-10 (https://www.ligonier.org/learn/articles/the-heresy-of-self-centeredness)",
+   "tag": "ep-2026-11-22",
+   "release_id": 454394856,
+   "mp3_url": "https://github.com/AllumStrat/old-paths-podcast/releases/download/ep-2026-11-22/old-paths-2026-11-22.mp3",
+   "bytes": 7600940,
+   "duration": 950,
+   "transcript_path": "transcripts/ep-2026-11-22.txt",
+   "notes_path": "notes/ep-2026-11-22.md",
+   "guid": "dc9116ea-95b7-5a42-ada5-cb3b2b622f61",
    "audio_deleted": false
   }
  ]
