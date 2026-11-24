@@ -846,6 +846,29 @@ def deliver_devo(epub_path, filename, config=None, today=None):
     return path
 
 
+def delete_devos(names, config=None):
+    """Delete the named devo EPUBs from the Dropbox devo folder. Missing files are ignored."""
+    gone = [k for k in missing_secrets() if k != "ESV_API_KEY"]
+    if gone:
+        raise DevoError("missing Dropbox settings: " + ", ".join(gone))
+    config = config or json.loads((ROOT / "config.json").read_text())
+    folder = dropbox_folder(config)
+    s = _http()
+    token = dropbox_access_token(s)
+    done = []
+    for name in names:
+        if "/" in name or not name.lower().endswith(".epub"):
+            raise DevoError(f"refusing to delete '{name}': only bare .epub filenames")
+        r = s.post(DROPBOX_DELETE_URL, timeout=60, json={"path": f"{folder}/{name}"},
+                   headers={"Authorization": f"Bearer {token}"})
+        if r.status_code == 409 and "not_found" in r.text:
+            continue
+        if r.status_code != 200:
+            raise _dropbox_error(r, f"delete {name}")
+        done.append(name)
+    return done
+
+
 DEVO_NAME_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})[ -]old[ -]paths[ -]devo.*\.epub$", re.I)
 
 

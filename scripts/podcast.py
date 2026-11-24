@@ -748,10 +748,13 @@ def cmd_devo_stage(args):
 
     root = Path(args.root)
     days = sorted(p for p in root.iterdir() if p.is_dir()) if root.is_dir() else []
-    if not days:
+    deletes = [n.strip() for n in (args.delete or []) if n.strip()]
+    if not days and not deletes:
         sys.exit(f"devo-stage: no date folders found in {root}")
     wmin, wmax = devo_limits()
     files, failed = {}, False
+    if deletes:
+        files[f"{DEVO_STAGE_DIR}/_delete.txt"] = ("\n".join(deletes) + "\n").encode()
     for d in days:
         try:
             dt.date.fromisoformat(d.name)
@@ -784,7 +787,8 @@ def cmd_devo_stage(args):
             git_out("update-index", "--add", "--cacheinfo", f"100644,{blob},{path}", env_extra=idx)
         tree = git_out("write-tree", env_extra=idx)
     commit = git_out("-c", "user.name=Old Paths", "-c", "user.email=old-paths@users.noreply.github.com",
-                     "commit-tree", tree, "-p", parent, "-m", f"Stage devo(s): {', '.join(d.name for d in days)}")
+                     "commit-tree", tree, "-p", parent, "-m",
+                     f"Stage devo(s): {', '.join(d.name for d in days) or 'deletes only'}")
     if args.dry_run:
         print(json.dumps({"status": "dry-run", "branch": branch, "commit": commit, "base": parent,
                           "files": sorted(files)}, indent=1))
@@ -805,6 +809,15 @@ def publish_devos(folder=None, fetcher_factory=None, deliver=None, gh=None):
         print(f"Nothing staged in {folder.name}/.")
     wmin, wmax = devo_limits()
     problems = []
+    del_file = folder / "_delete.txt"
+    if del_file.exists():
+        names = [n.strip() for n in del_file.read_text().splitlines() if n.strip()]
+        try:
+            for n in devo.delete_devos(names, CONFIG):
+                print(f"deleted from Dropbox: {n}")
+        except Exception as e:
+            problems.append(f"delete: {type(e).__name__}: {e}")
+            print(f"DEVO DELETE FAILED: {e}", file=sys.stderr)
     for d in days:
         try:
             text = (d / "devo.md").read_text()
@@ -1007,6 +1020,8 @@ def main():
 
     ds = sub.add_parser("devo-stage", help="push devo-only days (backfills, reruns) to a claude/devo-TIMESTAMP branch")
     ds.add_argument("root", help="folder of YYYY-MM-DD subfolders, each with devo.md and plan.json")
+    ds.add_argument("--delete", action="append", metavar="FILENAME",
+                    help="also delete this devo EPUB from Dropbox (repeatable)")
     ds.add_argument("--allow-short", action="store_true", help="skip the minimum word count")
     ds.add_argument("--dry-run", action="store_true", help="check and build the commit, but do not push")
     ds.set_defaults(func=cmd_devo_stage)
