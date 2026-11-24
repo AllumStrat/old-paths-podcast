@@ -1,6 +1,6 @@
 # Old Paths: daily production run
 
-You are producing today's episode of Old Paths. Work through every step in order. Do not skip the research. Do not edit any file in this repository. Everything you write goes in `work/`, which is ignored by git. The only git operation is the one `stage` performs in step 9. No tokens, environment variables, or package installs are needed for your part.
+You are producing today's episode of Old Paths. Work through every step in order. Do not skip the research, including the separate devo research pass in step 6. Do not edit any file in this repository. Everything you write goes in `work/`, which is ignored by git. The only git operation is the one `stage` performs in step 9. No tokens, environment variables, or package installs are needed for your part.
 
 ## 1. Set up
 
@@ -46,7 +46,23 @@ Write `work/script.txt` following `STYLE.md` exactly. Plain spoken text only. Ta
 
 ## 6. Write the devo
 
-Write `work/devo.md`, the written companion for a Kobo e-reader, for the same four readings. Follow `DEVO.md` exactly. Reuse the same research and the same quote bank: quote only what is in the quote bank, word for word, and name the author in the prose. Never type any Bible text, not even a verse. You write markers like `{{passage: Jeremiah 35:1-11}}` and the publishing Action fetches the ESV text for them.
+The devo is a separate job from the podcast and has its own research pass. Read `DEVO.md` again and follow it exactly. Do not reuse the podcast's quote bank as the devo's quotes, because the devo draws on Presbyterian, Reformed, and Reformed Baptist voices only.
+
+**Devo research pass.** For each of the four readings, every day:
+
+1. Search Gospel in Life for Tim Keller, desiringgod.org for John Piper, and ligonier.org for R.C. Sproul. Fetch the pages and use what they said about this passage. Check attribution: Ligonier's Tabletalk studies are by Ligonier staff, not Sproul.
+2. Then fill out with Spurgeon, Matthew Henry, Calvin, Gill, Boice, and the other voices listed in `DEVO.md`. Henry, Gill, and Spurgeon cover nearly every chapter, so no chunk goes without a real voice.
+3. Log every devo quote word for word with its author, work, verse, and URL in a `## Devo quote bank` section of `work/research.md`. Never quote from memory and never use quote aggregators.
+
+**Write `work/devo.md`** in the commentary, then scripture shape:
+
+- `# <title>`, then one `## <ref>` heading per reading, as written in `today.json`.
+- Split each reading into chunks. Each chunk is commentary followed by its `{{passage: Book C:V-V}}` marker. Every marker has commentary directly above it, and nothing comes after the last marker of a reading.
+- The commentary is quotes from the devo quote bank, introduced by author, with your own short sentences only to set the scene and connect the quotes. Each chunk has at least one quote, and the day has 10 to 18.
+- Quotes of two sentences or more go in a `>` blockquote. Keep quotes to about 120 words for Keller, Piper, Sproul, and other recent authors, and about 200 for public-domain authors.
+- Your own sentences follow the connecting-sentence rules in `DEVO.md`: plain words, no em dashes, none of the banned words, no -ing clause that explains why something matters.
+- Never type any Bible text. The publishing Action fetches the ESV for each marker.
+- No prayer, application questions, closing section, greeting, or sign-off. Total commentary is 1,800 to 3,200 words, with about 40 percent on the Old Testament reading.
 
 Then check it and fix every error:
 
@@ -67,9 +83,9 @@ Check each of these and fix anything that fails:
 - [ ] The opening picks up a thread from the recent episodes, and the close previews the next plan day.
 - [ ] The script follows the text-to-speech rules: no markdown, lists, parentheses, URLs, em dashes, abbreviations, or "LORD" in capitals, and references are written as speech.
 - [ ] Nothing from yesterday's script is repeated, whether an illustration, quote, or application.
-- [ ] `python3 scripts/podcast.py devo-check work/devo.md` passes with no errors. Its markers cover each reading with no gaps or overlaps, and the commentary is between 1,800 and 2,800 words.
-- [ ] Every quotation in `work/devo.md` is in the quote bank word for word, and the file contains no Bible text.
-- [ ] The devo has no prayer, no application-question list, and no greeting or sign-off, and its Old Testament section is the deepest.
+- [ ] `python3 scripts/podcast.py devo-check work/devo.md` passes with no errors. Every marker has commentary above it, nothing follows a reading's last marker, the markers cover each reading with no gaps or overlaps, and the commentary is between 1,800 and 3,200 words.
+- [ ] Every quotation in `work/devo.md` is in the `## Devo quote bank` word for word with a URL, comes from an allowed voice in `DEVO.md`, and the file contains no Bible text.
+- [ ] The devo has no prayer, no application-question list, no greeting or sign-off, and no commentary after a passage. Its Old Testament section is the deepest, and Keller, Piper, and Sproul were searched for every reading.
 
 ## 8. Write the metadata
 

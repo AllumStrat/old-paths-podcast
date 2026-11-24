@@ -1,0 +1,37 @@
+name: Publish devo
+
+# Devo-only path for backfills and reruns. `podcast.py devo-stage` pushes a claude/devo-TIMESTAMP
+# branch holding incoming-devo/DATE/. This workflow builds each EPUB with real ESV text, delivers
+# it to Dropbox, and removes the staging branch. It makes no audio and touches no feed.
+
+on:
+  push:
+    branches: ["claude/devo-*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-devo
+  cancel-in-progress: false
+
+jobs:
+  publish-devo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - run: python scripts/podcast.py publish-devos
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          SOURCE_BRANCH: ${{ github.ref_name }}
+          ESV_API_KEY: ${{ secrets.ESV_API_KEY }}
+          DROPBOX_APP_KEY: ${{ secrets.DROPBOX_APP_KEY }}
+          DROPBOX_APP_SECRET: ${{ secrets.DROPBOX_APP_SECRET }}
+          DROPBOX_REFRESH_TOKEN: ${{ secrets.DROPBOX_REFRESH_TOKEN }}

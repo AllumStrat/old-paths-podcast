@@ -11,6 +11,8 @@ Commands
   bootstrap  One-time setup: upload cover art and seed the series state.
   devo-check   Validate work/devo.md (markers cover each reading, word count). No token needed.
   devo-build   Build the Kobo devo EPUB from a devo.md (fetches ESV text; needs ESV_API_KEY or --fixture).
+  devo-stage   Push devo-only days (backfills, reruns) to a claude/devo-TIMESTAMP branch. --dry-run skips the push.
+  publish-devos  (GitHub Action) Build and deliver the devos staged in incoming-devo/.
   devo-setup   One-time interactive setup: GitHub secrets (ESV, Dropbox) and the Kobo's KOReader cloud storage.
                (dropbox-auth is an alias.)
 
@@ -511,7 +513,7 @@ def validate(raw, meta, allow_short=False):
 
 
 def publish_episode(c, *, date, raw, meta, research="", plan_day_id=None, jump_applied=None, force=False,
-                    devo_source=None, devo_info=None):
+                    devo_info=None):
     state = load_state(c)
     if state is None:
         sys.exit("No series state found. Run bootstrap first.")
@@ -543,8 +545,6 @@ def publish_episode(c, *, date, raw, meta, research="", plan_day_id=None, jump_a
         STATE_KEY: json.dumps(state, indent=1),
         "feed.xml": build_feed(state),
     }
-    if devo_source:
-        files[f"devos/{date}.md"] = devo_source  # commentary and markers only, never ESV text
     c.commit(files, f"Episode {ep['number']}: {meta['title']}")
     c.request_pages_build()
     result = {"status": "published", "episode": ep["number"], "plan_day": day_id,
@@ -569,7 +569,7 @@ def cmd_publish(args):
 
 
 def devo_limits():
-    return CONFIG.get("devo_words_min", 1800), CONFIG.get("devo_words_max", 2800)
+    return CONFIG.get("devo_words_min", 1800), CONFIG.get("devo_words_max", 3200)
 
 
 def run_devo_check(path, readings, allow_short=False, quiet=False):
@@ -635,7 +635,7 @@ def cmd_devo_build(args):
     print(json.dumps(dict(info, out=str(args.out), filename=filename), indent=1))
     if args.deliver:
         try:
-            devo.deliver_devo(args.out, filename, today=dt.date.fromisoformat(date))
+            devo.deliver_devo(args.out, filename)  # prune relative to the real today, not the devo date
         except devo.DevoError as e:
             sys.exit(f"devo delivery failed: {e}")
 
@@ -656,7 +656,7 @@ def process_devo(folder, plan):
     src = folder / "devo.md"
     text = src.read_text()
     date, plan_day = folder.name, plan.get("plan_day")
-    info = {"devo_path": f"devos/{date}.md"}
+    info = {}  # only the title and delivery flag go in the public state; the devo source is never published
     try:
         doc = devo.parse_devo(text)
         info["devo_title"] = doc["title"]
@@ -729,6 +729,125 @@ def cmd_stage(args):
                      indent=1))
 
 
+DEVO_STAGE_DIR = "incoming-devo"
+
+
+def git_out(*a, env_extra=None, input=None):
+    import subprocess
+
+    e = dict(os.environ, **(env_extra or {}))
+    r = subprocess.run(["git", *a], cwd=ROOT, check=True, capture_output=True, text=True, env=e, input=input)
+    return r.stdout.strip()
+
+
+def cmd_devo_stage(args):
+    """Push devos (backfills, reruns) to a claude/devo-TIMESTAMP branch. The branch differs from main only by
+    incoming-devo/<date>/{devo.md,plan.json}. The publish-devo Action builds and delivers them, then removes the branch."""
+    import subprocess
+    import tempfile
+
+    root = Path(args.root)
+    days = sorted(p for p in root.iterdir() if p.is_dir()) if root.is_dir() else []
+    if not days:
+        sys.exit(f"devo-stage: no date folders found in {root}")
+    wmin, wmax = devo_limits()
+    files, failed = {}, False
+    for d in days:
+        try:
+            dt.date.fromisoformat(d.name)
+        except ValueError:
+            sys.exit(f"devo-stage: folder '{d.name}' is not named YYYY-MM-DD")
+        if not (d / "devo.md").exists() or not (d / "plan.json").exists():
+            sys.exit(f"devo-stage: {d.name} needs both devo.md and plan.json")
+        plan = json.loads((d / "plan.json").read_text())
+        if plan.get("date") and plan["date"] != d.name:
+            sys.exit(f"devo-stage: {d.name}/plan.json says date {plan['date']}")
+        print(f"checking {d.name}", file=sys.stderr)
+        ok, _ = run_devo_check(d / "devo.md", plan.get("readings") or None, args.allow_short)
+        failed = failed or not ok
+        files[f"{DEVO_STAGE_DIR}/{d.name}/devo.md"] = (d / "devo.md").read_bytes()
+        files[f"{DEVO_STAGE_DIR}/{d.name}/plan.json"] = (d / "plan.json").read_bytes()
+    if failed:
+        sys.exit("devo-stage: refusing to stage; fix the devo-check errors above.")
+    branch = "claude/devo-" + now().strftime("%Y%m%d%H%M%S")
+    # Build the commit with a temporary index so the working tree and current branch are untouched.
+    try:
+        parent = git_out("rev-parse", "--verify", "-q", "origin/main")
+    except subprocess.CalledProcessError:
+        parent = git_out("rev-parse", "--verify", "main")
+    with tempfile.TemporaryDirectory() as tmp:
+        idx = {"GIT_INDEX_FILE": str(Path(tmp) / "index")}
+        git_out("read-tree", parent, env_extra=idx)
+        for path, body in files.items():
+            blob = subprocess.run(["git", "hash-object", "-w", "--stdin"], cwd=ROOT, check=True,
+                                  capture_output=True, input=body).stdout.decode().strip()
+            git_out("update-index", "--add", "--cacheinfo", f"100644,{blob},{path}", env_extra=idx)
+        tree = git_out("write-tree", env_extra=idx)
+    commit = git_out("-c", "user.name=Old Paths", "-c", "user.email=old-paths@users.noreply.github.com",
+                     "commit-tree", tree, "-p", parent, "-m", f"Stage devo(s): {', '.join(d.name for d in days)}")
+    if args.dry_run:
+        print(json.dumps({"status": "dry-run", "branch": branch, "commit": commit, "base": parent,
+                          "files": sorted(files)}, indent=1))
+        return
+    git_out("update-ref", f"refs/heads/{branch}", commit)
+    print("+ git push -f -u origin " + branch, file=sys.stderr)
+    subprocess.run(["git", "push", "-f", "-u", "origin", branch], cwd=ROOT, check=True)
+    print(branch)
+
+
+def publish_devos(folder=None, fetcher_factory=None, deliver=None, gh=None):
+    """Build and deliver every staged incoming-devo/<date>/. Returns a list of problems. Never raises per devo."""
+    folder = Path(folder) if folder else ROOT / DEVO_STAGE_DIR
+    fetcher_factory = fetcher_factory or devo.EsvFetcher
+    deliver = deliver or devo.deliver_devo
+    days = sorted(p for p in folder.glob("*") if p.is_dir()) if folder.exists() else []
+    if not days:
+        print(f"Nothing staged in {folder.name}/.")
+    wmin, wmax = devo_limits()
+    problems = []
+    for d in days:
+        try:
+            text = (d / "devo.md").read_text()
+            plan = json.loads((d / "plan.json").read_text()) if (d / "plan.json").exists() else {}
+            date, plan_day = d.name, plan.get("plan_day")
+            errors, warnings, _ = devo.check_devo(text, plan.get("readings") or None, wmin, wmax, allow_short=True)
+            for w in warnings:
+                print(f"devo warning ({date}): {w}", file=sys.stderr)
+            if errors:
+                raise devo.DevoError("devo.md failed validation: " + "; ".join(errors))
+            gone = devo.missing_secrets()
+            if gone:
+                raise devo.DevoError("missing secrets: " + ", ".join(gone))
+            epub = WORK / devo.devo_filename(plan_day, date)
+            WORK.mkdir(exist_ok=True)
+            built = devo.build_epub(text, epub, date=date, plan_day=plan_day, fetcher=fetcher_factory())
+            print(f"devo built: {built['title']} ({built['bytes']//1024} KB, {built['passages_fetched']} passages)")
+            try:
+                deliver(epub, epub.name, CONFIG)  # prunes relative to the real today
+            finally:
+                epub.unlink(missing_ok=True)  # never leave ESV text lying around
+            print(f"devo delivered: {date}")
+        except BaseException as e:
+            if isinstance(e, KeyboardInterrupt):
+                raise
+            problems.append(f"{d.name}: {type(e).__name__}: {e}")
+            print(f"DEVO FAILED for {d.name}: {e}", file=sys.stderr)
+    branch = os.environ.get("SOURCE_BRANCH", "")
+    if branch.startswith("claude/devo-"):
+        (gh or client()).delete_branch(branch)
+        print(f"deleted staging branch {branch}")
+    return problems
+
+
+def cmd_publish_devos(args):
+    """GitHub Action side: build and deliver staged devos, then delete the staging branch."""
+    problems = publish_devos()
+    if problems:
+        for prob in problems:
+            print(f"::error title=Devo failed::{prob.replace(chr(10), ' ')[:500]}", flush=True)
+        sys.exit("Some devos failed:\n  " + "\n  ".join(problems))
+
+
 def cmd_publish_incoming(args):
     """GitHub Action side: publish every staged episode in incoming/, then delete the staging branch."""
     c = client()
@@ -742,11 +861,10 @@ def cmd_publish_incoming(args):
         plan = json.loads((folder / "plan.json").read_text()) if (folder / "plan.json").exists() else {}
         research = (folder / "research.md").read_text() if (folder / "research.md").exists() else ""
         validate(raw, meta, allow_short=True)
-        devo_info = devo_source = None
+        devo_info = None
         if (folder / "devo.md").exists():
             # Before the slow audio step, and fenced off so it can never block the podcast.
             devo_info, problem = process_devo(folder, plan)
-            devo_source = (folder / "devo.md").read_text()
             if problem:
                 devo_problems.append(f"{folder.name}: {problem}")
                 print(f"DEVO FAILED for {folder.name}: {problem}", file=sys.stderr)
@@ -754,7 +872,7 @@ def cmd_publish_incoming(args):
             print(f"::warning title=No devo::No devo.md was staged for {folder.name}", flush=True)
         publish_episode(c, date=folder.name, raw=raw, meta=meta, research=research,
                         plan_day_id=plan.get("plan_day"), jump_applied=plan.get("jump_applied"),
-                        devo_source=devo_source, devo_info=devo_info)
+                        devo_info=devo_info)
     branch = os.environ.get("SOURCE_BRANCH", "")
     if branch.startswith("claude/episode-"):
         c.delete_branch(branch)
@@ -886,6 +1004,15 @@ def main():
 
     pi = sub.add_parser("publish-incoming", help="(GitHub Action) publish staged episodes")
     pi.set_defaults(func=cmd_publish_incoming)
+
+    ds = sub.add_parser("devo-stage", help="push devo-only days (backfills, reruns) to a claude/devo-TIMESTAMP branch")
+    ds.add_argument("root", help="folder of YYYY-MM-DD subfolders, each with devo.md and plan.json")
+    ds.add_argument("--allow-short", action="store_true", help="skip the minimum word count")
+    ds.add_argument("--dry-run", action="store_true", help="check and build the commit, but do not push")
+    ds.set_defaults(func=cmd_devo_stage)
+
+    pd = sub.add_parser("publish-devos", help="(GitHub Action) build and deliver staged incoming-devo/ days")
+    pd.set_defaults(func=cmd_publish_devos)
 
     dc = sub.add_parser("devo-check", help="validate a devo.md (markers cover each reading, word count)")
     dc.add_argument("file", nargs="?", default="work/devo.md")

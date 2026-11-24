@@ -104,6 +104,9 @@ def parse_ref(ref):
     spec = m.group(2).replace("\u2013", "-").replace(" ", "")
     if "," in spec:
         raise DevoError(f"'{ref}': comma lists are not supported; use one contiguous range per marker")
+    # One-chapter books (Obadiah, Philemon, 2 John, 3 John, Jude): "3 John 1-14" means verses.
+    if len(counts) == 1 and ":" not in spec:
+        spec = "1:" + spec if "-" in spec or int(spec) > 1 else spec
     parts = spec.split("-")
     if len(parts) > 2:
         raise DevoError(f"cannot read reference '{ref}'")
@@ -276,16 +279,16 @@ def check_devo(text, readings=None, wmin=None, wmax=None, allow_short=False):
             if prev_end != end:
                 errors.append(f"'{ref}': markers stop at {book} {fmt_pos(prev_end)}, but the reading ends at "
                               f"{book} {fmt_pos(end)}")
-        # commentary placement (warnings)
+        # shape: commentary, then its passage, repeated; nothing after the last passage
         kinds = [i[0] for i in sec["items"]]
-        if kinds and kinds[0] == "passage":
-            warnings.append(f"'{ref}': no commentary before the first passage chunk")
-        if kinds and kinds[-1] == "passage":
-            warnings.append(f"'{ref}': no commentary after the last passage chunk")
-        for a, b in zip(kinds, kinds[1:]):
-            if a == b == "passage":
-                warnings.append(f"'{ref}': two passage chunks back to back with no commentary between them")
-                break
+        for idx, item in enumerate(sec["items"]):
+            if item[0] == "passage" and (idx == 0 or kinds[idx - 1] != "text"):
+                where = "the heading" if idx == 0 else f"the passage '{sec['items'][idx - 1][1]}'"
+                errors.append(f"line {item[2]}: no commentary above passage '{item[1]}' in '{ref}' "
+                              f"(it needs commentary between {where} and this marker)")
+        if kinds and kinds[-1] == "text":
+            errors.append(f"'{ref}': no commentary after a passage. Remove the text after the last marker "
+                          f"or move it above the next marker.")
 
     if readings is not None:
         want = []

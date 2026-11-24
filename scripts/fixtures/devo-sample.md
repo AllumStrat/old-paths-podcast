@@ -10,13 +10,13 @@ The welcome is real, but it is thin. These Galileans had been in Jerusalem for t
 
 Notice also where he goes: Cana, the village where he turned the water into wine. John counts this as the second sign, and he wants you to see the pair as bookends around a section about people responding to Jesus.
 
-{{passage: John 4:46-54}}
-
 The man who walks twenty miles uphill from Capernaum is a royal official. The word could mean a soldier or a court servant of Herod Antipas. Either way he is a man used to giving orders, and here he can only beg. Jesus' first answer sounds harsh, a rebuke about needing signs and wonders to believe. The *you* is plural. He is speaking to the whole crowd, and the official is standing in it.
 
 The official does not argue. He repeats the plea, and the plea is one of the most human lines in the Gospel: come down before my child dies. He thinks Jesus has to be present, in the room, hands on the boy. Jesus gives him less than he asked and more than he knew to ask for. He gives him a word, and the man *believes the word* and starts home. That is the turn of the whole passage. The faith John wants is not faith in a sign you can see, but faith in what Jesus says before you see anything.
 
 The servants meet him on the road the next day, and the hour matches. The household believes. John closes by numbering the sign, and the number matters: this is the second sign in Galilee, after he came from Judea.
+
+{{passage: John 4:46-54}}
 
 ## 1 Peter 1:10-16
 
@@ -28,11 +28,11 @@ Three groups are straining toward the same thing. The prophets searched and inqu
 
 Watch the phrase about the sufferings of Christ and the subsequent glories. That order, suffering and then glory, is exactly the pattern Peter is about to ask his readers to live in.
 
-{{passage: 1 Peter 1:13-16}}
-
 Peter's *therefore* turns the doctrine into marching orders. The picture behind the call to prepare your minds for action is a man tucking up his long robe so he can run or work. Gird the mind. Be sober. Set your hope fully, and notice the hope is aimed at a grace that will be *brought* to you at the revelation of Jesus Christ. The hope rests on a delivery already on its way.
 
 Then comes holiness, and Peter quotes the Old Testament himself. The call to be holy because God is holy comes from Leviticus, where it was said to a camp of freed slaves. Peter says it again to a scattered church of freed slaves of another kind. The pattern did not change. God redeems a people and then tells them whose they are.
+
+{{passage: 1 Peter 1:13-16}}
 
 ## Ecclesiastes 11
 
@@ -44,9 +44,9 @@ The first verse is about commerce. Grain was shipped across water, and the retur
 
 Look at where verse 5 lands. You do not know the work of God who makes everything. That is not an excuse for doing nothing. It is the reason to sow in the morning and keep your hand busy in the evening, because you cannot know which seed will take.
 
-{{passage: Ecclesiastes 11:7-10}}
-
 The mood shifts. Light is sweet, and the Preacher says to enjoy every year, but with the days of darkness in view. Then he speaks straight to the young man and tells him to rejoice. This is not permission to follow every impulse, because the same verse says that God will bring him into judgment for all of it. The word *vanity* returns at the end, and it carries its usual meaning of breath, something that vanishes. Youth is a vapor. So rejoice now, and remove vexation from your heart.
+
+{{passage: Ecclesiastes 11:7-10}}
 
 ## Jeremiah 35-38
 
@@ -80,6 +80,6 @@ Zedekiah is on the throne, put there by Babylon, and he is a man who wants a pro
 
 The officials hear what Jeremiah is telling the people, and they ask the king for his death on the grounds that he weakens the hands of the soldiers. Zedekiah answers that he is in their hands, and the king can do nothing against them. They let Jeremiah down by ropes into a cistern with no water but mud. Ebed-melech, an Ethiopian official in the palace, goes to the king to plead for him. Notice who it is. A foreigner and a eunuch has more courage than all of Judah's princes. He takes thirty men and old rags and cloths and pulls Jeremiah out.
 
-{{passage: Jeremiah 38:14-28}}
-
 The last scene is a private audience in the temple's third entrance. Zedekiah wants to know what will happen, and Jeremiah gives him a way out: surrender, and live. The king is afraid of the Jews who have already gone over to Babylon and of what they might do to him. So he asks Jeremiah to keep their conversation secret, and then he sends him back to the court of the guard. The chapter ends with Jeremiah still there on the day Jerusalem fell. It is a bleak ending, because Zedekiah had two thrones to choose between, the one in Jerusalem and the one he could not see.
+
+{{passage: Jeremiah 38:14-28}}
