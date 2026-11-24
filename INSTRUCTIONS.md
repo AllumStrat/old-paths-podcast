@@ -1,6 +1,6 @@
 # Old Paths: daily production run
 
-You are producing today's episode of Old Paths. Work through every step in order. Do not skip the research. Do not edit any file in this repository. Everything you write goes in `work/`, which is ignored by git. The only git operation is the one `stage` performs in step 8. No tokens, environment variables, or package installs are needed for your part.
+You are producing today's episode of Old Paths. Work through every step in order. Do not skip the research. Do not edit any file in this repository. Everything you write goes in `work/`, which is ignored by git. The only git operation is the one `stage` performs in step 9. No tokens, environment variables, or package installs are needed for your part.
 
 ## 1. Set up
 
@@ -12,7 +12,7 @@ python3 scripts/podcast.py next
 - If `next` exits with status 3 (`already_published_today`), stop. Report that today's episode already exists.
 - If it cannot read the series state, stop and report the error.
 - Otherwise read `work/today.json`. It contains today's plan day, the four readings, the next plan day's readings, recent episodes with their summaries and open threads, and which authors were quoted recently.
-- Read `STYLE.md` and `SOURCES.md` in full.
+- Read `STYLE.md`, `DEVO.md`, and `SOURCES.md` in full.
 - Read yesterday's script with `python3 scripts/podcast.py transcript last` so you build on it and do not repeat it.
 
 ## 2. Read the passages
@@ -44,7 +44,17 @@ Using the structure and word budget in `STYLE.md`, write a short outline at the 
 
 Write `work/script.txt` following `STYLE.md` exactly. Plain spoken text only. Target 2,300 to 2,600 words, about 15 minutes.
 
-## 6. Review and revise
+## 6. Write the devo
+
+Write `work/devo.md`, the written companion for a Kobo e-reader, for the same four readings. Follow `DEVO.md` exactly. Reuse the same research and the same quote bank: quote only what is in the quote bank, word for word, and name the author in the prose. Never type any Bible text, not even a verse. You write markers like `{{passage: Jeremiah 35:1-11}}` and the publishing Action fetches the ESV text for them.
+
+Then check it and fix every error:
+
+```bash
+python3 scripts/podcast.py devo-check work/devo.md
+```
+
+## 7. Review and revise
 
 Check each of these and fix anything that fails:
 
@@ -57,8 +67,11 @@ Check each of these and fix anything that fails:
 - [ ] The opening picks up a thread from the recent episodes, and the close previews the next plan day.
 - [ ] The script follows the text-to-speech rules: no markdown, lists, parentheses, URLs, em dashes, abbreviations, or "LORD" in capitals, and references are written as speech.
 - [ ] Nothing from yesterday's script is repeated, whether an illustration, quote, or application.
+- [ ] `python3 scripts/podcast.py devo-check work/devo.md` passes with no errors. Its markers cover each reading with no gaps or overlaps, and the commentary is between 1,800 and 2,800 words.
+- [ ] Every quotation in `work/devo.md` is in the quote bank word for word, and the file contains no Bible text.
+- [ ] The devo has no prayer, no application-question list, and no greeting or sign-off, and its Old Testament section is the deepest.
 
-## 7. Write the metadata
+## 8. Write the metadata
 
 Create `work/meta.json`:
 
@@ -74,19 +87,20 @@ Create `work/meta.json`:
 
 List every quoted source in `sources`.
 
-## 8. Stage for publishing
+## 9. Stage for publishing
 
 ```bash
 python3 scripts/podcast.py stage
 ```
 
-This copies your script, metadata, and research into `incoming/DATE/` and pushes them to a `claude/episode-DATE` branch. A GitHub Action on that branch then makes the audio, attaches it to a GitHub Release, updates the feed and series state on `gh-pages`, deletes audio older than 60 days, and removes the branch.
+This copies your script, metadata, devo, and research into `incoming/DATE/` and pushes them to a `claude/episode-DATE` branch. A GitHub Action on that branch then builds the devo EPUB (fetching the ESV text itself) and delivers it to Dropbox, makes the audio, attaches it to a GitHub Release, updates the feed and series state on `gh-pages`, deletes audio older than 60 days, and removes the branch.
 
 - If it rejects the script as too short, expand the script with more substance from your research, not padding, and run it again.
 - If it rejects the script as too long, cut whole points rather than squeezing sentences, and run it again.
+- If `stage` warns that `work/devo.md` is missing or failed `devo-check`, the podcast is still staged but the devo is not. Fix the devo and run `stage` again.
 - If the push fails, run it once more. If it fails again, stop and report the error.
 - Optionally, if you can reach the feed URL printed by `stage`, wait up to 15 minutes and confirm today's title appears in it.
 
-## 9. Report
+## 10. Report
 
-Finish with a short report: the episode title, the plan day, the word count, the number of quotes and the authors used, the staging branch, and whether you confirmed the episode in the feed.
+Finish with a short report: the episode title, the plan day, the word count, the number of quotes and the authors used, the staging branch, whether the devo was staged (with its commentary word count), and whether you confirmed the episode in the feed.

@@ -13,5 +13,9 @@
   "edge_rate": "+0%",
   "target_words_min": 2300,
   "target_words_max": 2600,
-  "retention_days": 60
+  "retention_days": 60,
+  "devo_words_min": 1800,
+  "devo_words_max": 2800,
+  "dropbox_devo_path": "",
+  "devo_retention_days": 14
 }

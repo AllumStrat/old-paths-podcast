@@ -9,12 +9,18 @@ Commands
   publish           Publish directly from work/ (needs GH_TOKEN).
   feed       Rebuild and upload feed.xml from the saved state.
   bootstrap  One-time setup: upload cover art and seed the series state.
+  devo-check   Validate work/devo.md (markers cover each reading, word count). No token needed.
+  devo-build   Build the Kobo devo EPUB from a devo.md (fetches ESV text; needs ESV_API_KEY or --fixture).
+  devo-setup   One-time interactive setup: GitHub secrets (ESV, Dropbox) and the Kobo's KOReader cloud storage.
+               (dropbox-auth is an alias.)
 
 Environment variables (only for publish, publish-incoming, feed, bootstrap)
   GH_TOKEN or GITHUB_TOKEN        token with contents and pages write access
   GH_REPO or GITHUB_REPOSITORY    owner/repo, for example jacob/old-paths-podcast
 Optional
   PAGES_URL  only if your GitHub Pages address is not https://OWNER.github.io/REPO
+Devo delivery (publish-incoming, devo-build): ESV_API_KEY, DROPBOX_APP_KEY, DROPBOX_APP_SECRET,
+  DROPBOX_REFRESH_TOKEN. If unset, publish-incoming skips the devo with a warning.
 """
 import argparse
 import asyncio
@@ -29,6 +35,8 @@ import uuid
 from pathlib import Path
 from xml.sax.saxutils import escape
 from zoneinfo import ZoneInfo
+
+import devo
 
 ROOT = Path(__file__).resolve().parent.parent
 WORK = ROOT / "work"
@@ -448,7 +456,7 @@ def show_notes_text(meta):
     return "\n".join(parts)
 
 
-def add_episode(state, *, date, day_id, meta, tag, release_id, mp3_url, size, duration, published):
+def add_episode(state, *, date, day_id, meta, tag, release_id, mp3_url, size, duration, published, devo_info=None):
     number = len(state["episodes"]) + 1
     readings = meta.get("readings") or ([r["passage"] for r in plan_day(day_id)["readings"]] if day_id in IDS else [])
     state["episodes"].append({
@@ -472,6 +480,8 @@ def add_episode(state, *, date, day_id, meta, tag, release_id, mp3_url, size, du
         "guid": episode_guid(tag),
         "audio_deleted": False,
     })
+    if devo_info:
+        state["episodes"][-1].update(devo_info)
     return state["episodes"][-1]
 
 
@@ -500,7 +510,8 @@ def validate(raw, meta, allow_short=False):
     return words
 
 
-def publish_episode(c, *, date, raw, meta, research="", plan_day_id=None, jump_applied=None, force=False):
+def publish_episode(c, *, date, raw, meta, research="", plan_day_id=None, jump_applied=None, force=False,
+                    devo_source=None, devo_info=None):
     state = load_state(c)
     if state is None:
         sys.exit("No series state found. Run bootstrap first.")
@@ -522,15 +533,19 @@ def publish_episode(c, *, date, raw, meta, research="", plan_day_id=None, jump_a
 
     release_id, mp3_url = c.upload_episode(tag, meta["title"], show_notes_text(meta), mp3)
     ep = add_episode(state, date=date, day_id=day_id, meta=meta, tag=tag, release_id=release_id, mp3_url=mp3_url,
-                     size=size, duration=duration, published=email.utils.format_datetime(now()))
+                     size=size, duration=duration, published=email.utils.format_datetime(now()),
+                     devo_info=devo_info)
     state["next_plan_day"] = next_id(day_id) if day_id in IDS else state["next_plan_day"]
     removed = prune(c, state)
-    c.commit({
+    files = {
         ep["transcript_path"]: raw,
         ep["notes_path"]: show_notes_text(meta) + ("\n\n---\nResearch notes\n\n" + research if research else ""),
         STATE_KEY: json.dumps(state, indent=1),
         "feed.xml": build_feed(state),
-    }, f"Episode {ep['number']}: {meta['title']}")
+    }
+    if devo_source:
+        files[f"devos/{date}.md"] = devo_source  # commentary and markers only, never ESV text
+    c.commit(files, f"Episode {ep['number']}: {meta['title']}")
     c.request_pages_build()
     result = {"status": "published", "episode": ep["number"], "plan_day": day_id,
               "next_plan_day": state["next_plan_day"], "audio": mp3_url,
@@ -553,6 +568,127 @@ def cmd_publish(args):
                     force=args.force)
 
 
+def devo_limits():
+    return CONFIG.get("devo_words_min", 1800), CONFIG.get("devo_words_max", 2800)
+
+
+def run_devo_check(path, readings, allow_short=False, quiet=False):
+    """Print errors and warnings for a devo.md; return (ok, stats)."""
+    wmin, wmax = devo_limits()
+    errors, warnings, stats = devo.check_devo(Path(path).read_text(), readings, wmin, wmax, allow_short)
+    for w in warnings:
+        print(f"devo warning: {w}", file=sys.stderr)
+    for e in errors:
+        print(f"devo ERROR: {e}", file=sys.stderr)
+    if not errors and not quiet:
+        print(f"devo ok: {stats['words']} commentary words, {stats['readings']} readings, "
+              f"{stats['chunks']} passage chunks ({wmin}-{wmax} allowed)", file=sys.stderr)
+    return not errors, stats
+
+
+def stage_devo(today, folder, allow_short):
+    """Copy work/devo.md into the staging folder if it passes devo-check. Never blocks the podcast."""
+    import shutil
+
+    src = WORK / "devo.md"
+    if not src.exists():
+        print("WARNING: work/devo.md not found; staging the podcast without a devo.", file=sys.stderr)
+        return False
+    readings = [r["passage"] for r in today.get("readings", [])] or None
+    ok, _ = run_devo_check(src, readings, allow_short)
+    if not ok:
+        print("WARNING: work/devo.md failed devo-check; staging the podcast WITHOUT the devo. "
+              "Fix the errors above and run stage again to include it.", file=sys.stderr)
+        return False
+    shutil.copy(src, folder / "devo.md")
+    return True
+
+
+def cmd_devo_check(args):
+    readings = None
+    today_file = Path(args.today)
+    if args.readings:
+        readings = [r.strip() for r in args.readings.split(";") if r.strip()]
+    elif today_file.exists():
+        readings = [r["passage"] for r in json.loads(today_file.read_text()).get("readings", [])]
+    else:
+        print(f"note: {today_file} not found; skipping the check against today's readings", file=sys.stderr)
+    ok, _ = run_devo_check(args.file, readings, args.allow_short)
+    sys.exit(0 if ok else 1)
+
+
+def cmd_devo_build(args):
+    text = Path(args.file).read_text()
+    date, plan_day = args.date, args.plan_day
+    today_file = WORK / "today.json"
+    if (not date or not plan_day) and today_file.exists():
+        today = json.loads(today_file.read_text())
+        date = date or today.get("date")
+        plan_day = plan_day or today.get("plan_day")
+    date = date or now().date().isoformat()
+    try:
+        info = devo.build_epub(text, args.out, date=date, plan_day=plan_day,
+                               fetcher=devo.EsvFetcher(fixture=args.fixture))
+    except devo.DevoError as e:
+        sys.exit(f"devo-build failed: {e}")
+    filename = devo.devo_filename(plan_day, date)
+    print(json.dumps(dict(info, out=str(args.out), filename=filename), indent=1))
+    if args.deliver:
+        try:
+            devo.deliver_devo(args.out, filename, today=dt.date.fromisoformat(date))
+        except devo.DevoError as e:
+            sys.exit(f"devo delivery failed: {e}")
+
+
+def cmd_devo_setup(args):
+    import devo_setup
+
+    try:
+        rc = devo_setup.run(kobo=args.kobo, kobo_only=args.kobo_only)
+    except (devo.DevoError, KeyboardInterrupt, EOFError) as e:
+        sys.exit(str(e) or "cancelled")
+    sys.exit(rc)
+
+
+def process_devo(folder, plan):
+    """Build the EPUB for a staged devo and deliver it to Dropbox.
+    Returns (devo_info for the state entry or None, problem string or None). Never raises."""
+    src = folder / "devo.md"
+    text = src.read_text()
+    date, plan_day = folder.name, plan.get("plan_day")
+    info = {"devo_path": f"devos/{date}.md"}
+    try:
+        doc = devo.parse_devo(text)
+        info["devo_title"] = doc["title"]
+    except devo.DevoError as e:
+        return None, f"devo.md is unreadable: {e}"
+    try:
+        errors, warnings, _ = devo.check_devo(text, plan.get("readings") or None, allow_short=True)
+        for w in warnings:
+            print(f"devo warning: {w}", file=sys.stderr)
+        if errors:
+            raise devo.DevoError("devo.md failed validation: " + "; ".join(errors))
+        missing = devo.missing_secrets()
+        if missing:
+            print(f"::warning title=Devo skipped::Devo not built because these secrets are unset: {', '.join(missing)}",
+                  flush=True)
+            info["devo_delivered"] = False
+            return info, None
+        epub = WORK / devo.devo_filename(plan_day, date)
+        WORK.mkdir(exist_ok=True)
+        built = devo.build_epub(text, epub, date=date, plan_day=plan_day, fetcher=devo.EsvFetcher())
+        print(f"devo built: {built['title']} ({built['bytes']//1024} KB, {built['passages_fetched']} passages)")
+        devo.deliver_devo(epub, epub.name, CONFIG)
+        epub.unlink(missing_ok=True)  # never leave ESV text lying around
+        info["devo_delivered"] = True
+        return info, None
+    except BaseException as e:  # a devo problem must never stop the podcast
+        if isinstance(e, KeyboardInterrupt):
+            raise
+        info["devo_delivered"] = False
+        return info, f"{type(e).__name__}: {e}"
+
+
 def cmd_stage(args):
     """Scheduled-task side: package today's episode and push it to a claude/episode-DATE branch.
     The GitHub Action on that branch does the audio, release, feed, and cleanup."""
@@ -571,7 +707,10 @@ def cmd_stage(args):
     if (WORK / "research.md").exists():
         shutil.copy(WORK / "research.md", folder / "research.md")
     (folder / "plan.json").write_text(json.dumps({"plan_day": today["plan_day"],
-                                                  "jump_applied": today.get("jump_applied")}, indent=1))
+                                                  "jump_applied": today.get("jump_applied"),
+                                                  "readings": [r["passage"] for r in today.get("readings", [])]},
+                                                 indent=1))
+    devo_staged = stage_devo(today, folder, args.allow_short)
     branch = f"claude/episode-{date}"
 
     def git(*a):
@@ -584,6 +723,7 @@ def cmd_stage(args):
         "commit", "-m", f"Stage episode for {date}: {meta['title']}")
     git("push", "-f", "-u", "origin", branch)
     print(json.dumps({"status": "staged", "date": date, "branch": branch, "words": words,
+                      "devo": "staged" if devo_staged else "NOT staged (see warnings above)",
                       "feed": pages_url("feed.xml"),
                       "note": "The 'Publish episode' GitHub Action now makes the audio and updates the feed (about 5-10 minutes)."},
                      indent=1))
@@ -592,6 +732,7 @@ def cmd_stage(args):
 def cmd_publish_incoming(args):
     """GitHub Action side: publish every staged episode in incoming/, then delete the staging branch."""
     c = client()
+    devo_problems = []
     folders = sorted(p for p in (ROOT / "incoming").glob("*") if p.is_dir()) if (ROOT / "incoming").exists() else []
     if not folders:
         print("Nothing staged in incoming/.")
@@ -601,12 +742,28 @@ def cmd_publish_incoming(args):
         plan = json.loads((folder / "plan.json").read_text()) if (folder / "plan.json").exists() else {}
         research = (folder / "research.md").read_text() if (folder / "research.md").exists() else ""
         validate(raw, meta, allow_short=True)
+        devo_info = devo_source = None
+        if (folder / "devo.md").exists():
+            # Before the slow audio step, and fenced off so it can never block the podcast.
+            devo_info, problem = process_devo(folder, plan)
+            devo_source = (folder / "devo.md").read_text()
+            if problem:
+                devo_problems.append(f"{folder.name}: {problem}")
+                print(f"DEVO FAILED for {folder.name}: {problem}", file=sys.stderr)
+        else:
+            print(f"::warning title=No devo::No devo.md was staged for {folder.name}", flush=True)
         publish_episode(c, date=folder.name, raw=raw, meta=meta, research=research,
-                        plan_day_id=plan.get("plan_day"), jump_applied=plan.get("jump_applied"))
+                        plan_day_id=plan.get("plan_day"), jump_applied=plan.get("jump_applied"),
+                        devo_source=devo_source, devo_info=devo_info)
     branch = os.environ.get("SOURCE_BRANCH", "")
     if branch.startswith("claude/episode-"):
         c.delete_branch(branch)
         print(f"deleted staging branch {branch}")
+    if devo_problems:
+        for prob in devo_problems:
+            msg = prob.replace("\n", " ").replace("\r", " ")[:500]
+            print(f"::error title=Devo failed (podcast published)::{msg}", flush=True)
+        sys.exit("The podcast was published, but the devo failed:\n  " + "\n  ".join(devo_problems))
 
 
 # ---------------------------------------------------------------- feed
@@ -729,6 +886,29 @@ def main():
 
     pi = sub.add_parser("publish-incoming", help="(GitHub Action) publish staged episodes")
     pi.set_defaults(func=cmd_publish_incoming)
+
+    dc = sub.add_parser("devo-check", help="validate a devo.md (markers cover each reading, word count)")
+    dc.add_argument("file", nargs="?", default="work/devo.md")
+    dc.add_argument("--today", default="work/today.json", help="today.json holding the day's readings")
+    dc.add_argument("--readings", help="semicolon-separated readings, overrides --today")
+    dc.add_argument("--allow-short", action="store_true", help="skip the minimum word count")
+    dc.set_defaults(func=cmd_devo_check)
+
+    db = sub.add_parser("devo-build", help="build the devo EPUB (fetches ESV text from the ESV API)")
+    db.add_argument("file", nargs="?", default="work/devo.md")
+    db.add_argument("--out", required=True, help="output .epub path")
+    db.add_argument("--fixture", help="folder of canned passage html; no network (for tests)")
+    db.add_argument("--date", help="YYYY-MM-DD for the title (default: work/today.json, else today)")
+    db.add_argument("--plan-day", help="plan day like 10-14 for the title (default: work/today.json)")
+    db.add_argument("--deliver", action="store_true", help="also upload the EPUB to Dropbox (needs the Dropbox secrets)")
+    db.set_defaults(func=cmd_devo_build)
+
+    da = sub.add_parser("devo-setup", aliases=["dropbox-auth"],
+                        help="one-time interactive setup of GitHub secrets and the Kobo (secrets never printed)")
+    da.add_argument("--kobo", help="Kobo mount path (default /Volumes/KOBOeReader)")
+    da.add_argument("--kobo-only", action="store_true",
+                    help="skip ESV/GitHub; re-authorize Dropbox and write only the Kobo config")
+    da.set_defaults(func=cmd_devo_setup)
 
     t = sub.add_parser("transcript")
     t.add_argument("which", nargs="?", default="last", help="'last' or a date like 2026-10-19")
